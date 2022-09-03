@@ -1,6 +1,6 @@
-using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Extensions;
@@ -16,13 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<OrderDatabaseSettings>(
     builder.Configuration.GetSection("OrderDatabase"));
 
-// Add repositories and services.
+// Add repositories and services, validators
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IValidator<OrderCreateUpdateDto>, OrderCreateUpdateValidator>();
 
-// Add AutoMapper.
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Add Mapster.
+builder.Services.AddMapster();
 
 // Add FluentValidation.
 builder.Services
@@ -76,7 +76,7 @@ app.MapPost("api/orders", async (IOrderService service, IMapper mapper, IValidat
         return Results.Created($"api/orders/{order.Id}", readDto);
     }
 
-    var failuresDictionary = validationResult.Errors.ToDictionaryOfStringArrays();
+    var failuresDictionary = validationResult.Errors.ToDictionary();
 
     return Results.ValidationProblem(failuresDictionary);
 });
@@ -95,7 +95,7 @@ app.MapPut("api/orders/{id}", async (IOrderService service, IMapper mapper, IVal
         return Results.NoContent();
     }
 
-    var failuresDictionary = validationResult.Errors.ToDictionaryOfStringArrays();
+    var failuresDictionary = validationResult.Errors.ToDictionary();
 
     return Results.ValidationProblem(failuresDictionary);
 });
