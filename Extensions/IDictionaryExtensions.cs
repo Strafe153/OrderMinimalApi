@@ -4,7 +4,7 @@ namespace OrderMinimalApi.Extensions
 {
     public static class IDictionaryExtensions
     {
-        public static IDictionary<string, string[]> ToDictionaryOfStringArrays(this List<ValidationFailure> validationFailures)
+        public static IDictionary<string, string[]> ToDictionary(this List<ValidationFailure> validationFailures)
         {
             Dictionary<string, string[]> failuresDictionary = new();
 
