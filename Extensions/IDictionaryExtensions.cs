@@ -12,13 +12,13 @@ namespace OrderMinimalApi.Extensions
                 .GroupBy(f => f.PropertyName)
                 .Select(g => new
                 {
-                    Property = g.Key,
-                    Errors = g.ToArray()
+                    PropertyName = g.Key,
+                    Failures = g.ToArray()
                 });
 
             foreach (var failure in groupedFailures)
             {
-                failuresDictionary.Add(failure.Property, failure.Errors.Select(f => f.ErrorMessage).ToArray());
+                failuresDictionary.Add(failure.PropertyName, failure.Failures.Select(f => f.ErrorMessage).ToArray());
             }
 
             return failuresDictionary;
