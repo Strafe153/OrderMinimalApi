@@ -5,10 +5,5 @@
 * CRUD operations with the Order entity
 
 ## Dependencies
-* `StackExchange.Redis` for Redis
-* `AutoMapper` for DTO mapping
+* `Mapster` for DTO mapping
 * `FluentValidation` for DTO validation
-* `xUnit` for unit-tests
-* `Moq` for mocking
-* `AutoFixture` for test fixtures
-* `FluentAssertions` for assertions
