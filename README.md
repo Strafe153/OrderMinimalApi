@@ -5,5 +5,6 @@
 * CRUD operations with the Order entity
 
 ## Dependencies
+* `MongoDB.Driver` for MongoDB
 * `Mapster` for DTO mapping
 * `FluentValidation` for DTO validation
