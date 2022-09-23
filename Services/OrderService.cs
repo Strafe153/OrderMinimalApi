@@ -1,62 +1,61 @@
 ﻿using OrderMinimalApi.Models;
 using OrderMinimalApi.Repositories;
 
-namespace OrderMinimalApi.Services
+namespace OrderMinimalApi.Services;
+
+public class OrderService : IOrderService
 {
-    public class OrderService : IOrderService
+    private readonly IOrderRepository _repository;
+
+    public OrderService(IOrderRepository repository)
     {
-        private readonly IOrderRepository _repository;
+        _repository = repository;
+    }
 
-        public OrderService(IOrderRepository repository)
+    public async Task<IEnumerable<Order>> GetAllAsync()
+    {
+        var orders = await _repository.GetAllAsync();
+        return orders;
+    }
+
+    public async Task<Order> GetByIdAsync(string id)
+    {
+        var order = await _repository.GetByIdAsync(id);
+
+        if (order is null)
         {
-            _repository = repository;
+            throw new NullReferenceException($"Order with id '{id}' not found");
         }
 
-        public async Task<IEnumerable<Order>> GetAllAsync()
+        return order;
+    }
+
+    public async Task CreateAsync(Order order)
+    {
+        await _repository.CreateAsync(order);
+    }
+
+    public async Task UpdateAsync(string id, Order newOrder)
+    {
+        try
         {
-            var orders = await _repository.GetAllAsync();
-            return orders;
+            await _repository.UpdateAsync(id, newOrder);
         }
-
-        public async Task<Order> GetByIdAsync(string id)
+        catch (Exception)
         {
-            var order = await _repository.GetByIdAsync(id);
-
-            if (order is null)
-            {
-                throw new NullReferenceException($"Order with id '{id}' not found");
-            }
-
-            return order;
+            throw new NullReferenceException($"Order with id '{id}' not found");
         }
+    }
 
-        public async Task CreateAsync(Order order)
+    public async Task DeleteAsync(string id)
+    {
+        try
         {
-            await _repository.CreateAsync(order);
+            await _repository.DeleteAsync(id);
         }
-
-        public async Task UpdateAsync(string id, Order newOrder)
+        catch (Exception)
         {
-            try
-            {
-                await _repository.UpdateAsync(id, newOrder);
-            }
-            catch (Exception)
-            {
-                throw new NullReferenceException($"Order with id '{id}' not found");
-            }
-        }
-
-        public async Task DeleteAsync(string id)
-        {
-            try
-            {
-                await _repository.DeleteAsync(id);
-            }
-            catch (Exception)
-            {
-                throw new NullReferenceException($"Order with id '{id}' not found");
-            }
+            throw new NullReferenceException($"Order with id '{id}' not found");
         }
     }
 }

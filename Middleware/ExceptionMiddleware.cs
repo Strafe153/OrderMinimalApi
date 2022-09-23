@@ -1,47 +1,45 @@
-﻿using FluentValidation;
-using OrderMinimalApi.Models;
+﻿using OrderMinimalApi.Models;
 using System.Net;
 
-namespace OrderMinimalApi.Middleware
+namespace OrderMinimalApi.Middleware;
+
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
         {
-            _next = next;
+            await _next(context);
         }
-
-        public async Task InvokeAsync(HttpContext context)
+        catch (NullReferenceException ex)
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (NullReferenceException ex)
-            {
-                await HandleExceptionAsync(context, HttpStatusCode.NotFound,
-                    $"{ex.Message}. Path:{context.Request.Path}.");
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
-                   $"{ex.Message}. Path:{context.Request.Path}.");
-            }
+            await HandleExceptionAsync(context, HttpStatusCode.NotFound,
+                $"{ex.Message}. Path:{context.Request.Path}.");
         }
-
-        private Task HandleExceptionAsync(HttpContext context, HttpStatusCode code, string message)
+        catch (Exception ex)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)code;
-
-            return context.Response.WriteAsync(
-                new ErrorDetails()
-                {
-                    StatusCode = context.Response.StatusCode,
-                    Message = message
-                }.ToString());
+            await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
+               $"{ex.Message}. Path:{context.Request.Path}.");
         }
+    }
+
+    private Task HandleExceptionAsync(HttpContext context, HttpStatusCode code, string message)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)code;
+
+        return context.Response.WriteAsync(
+            new ErrorDetails()
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = message
+            }.ToString());
     }
 }

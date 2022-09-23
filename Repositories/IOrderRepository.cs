@@ -1,13 +1,12 @@
 ﻿using OrderMinimalApi.Models;
 
-namespace OrderMinimalApi.Repositories
+namespace OrderMinimalApi.Repositories;
+
+public interface IOrderRepository
 {
-    public interface IOrderRepository
-    {
-        Task<IEnumerable<Order>> GetAllAsync();
-        Task<Order?> GetByIdAsync(string id);
-        Task CreateAsync(Order order);
-        Task UpdateAsync(string id, Order newOrder);
-        Task DeleteAsync(string id);
-    }
+    Task<IEnumerable<Order>> GetAllAsync();
+    Task<Order?> GetByIdAsync(string id);
+    Task CreateAsync(Order order);
+    Task UpdateAsync(string id, Order newOrder);
+    Task DeleteAsync(string id);
 }
