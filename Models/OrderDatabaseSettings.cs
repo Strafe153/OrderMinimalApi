@@ -1,9 +1,8 @@
-﻿namespace OrderMinimalApi.Models
+﻿namespace OrderMinimalApi.Models;
+
+public class OrderDatabaseSettings
 {
-    public class OrderDatabaseSettings
-    {
-        public string ConnectionString { get; set; } = null!;
-        public string DatabaseName { get; set; } = null!;
-        public string OrdersCollectionName { get; set; } = null!;
-    }
+    public string ConnectionString { get; set; } = null!;
+    public string DatabaseName { get; set; } = null!;
+    public string OrdersCollectionName { get; set; } = null!;
 }

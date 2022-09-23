@@ -2,14 +2,13 @@
 using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Models;
 
-namespace OrderMinimalApi.MappingRegistrations
+namespace OrderMinimalApi.MappingRegistrations;
+
+public class OrderMappingRegistration : IRegister
 {
-    public class OrderMappingRegistration : IRegister
+    public void Register(TypeAdapterConfig config)
     {
-        public void Register(TypeAdapterConfig config)
-        {
-            config.NewConfig<Order, OrderReadDto>();
-            config.NewConfig<OrderCreateUpdateDto, Order>();
-        }
+        config.NewConfig<Order, OrderReadDto>();
+        config.NewConfig<OrderCreateUpdateDto, Order>();
     }
 }

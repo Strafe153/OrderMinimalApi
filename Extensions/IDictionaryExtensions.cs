@@ -1,27 +1,26 @@
 ﻿using FluentValidation.Results;
 
-namespace OrderMinimalApi.Extensions
+namespace OrderMinimalApi.Extensions;
+
+public static class IDictionaryExtensions
 {
-    public static class IDictionaryExtensions
+    public static IDictionary<string, string[]> ToDictionary(this List<ValidationFailure> validationFailures)
     {
-        public static IDictionary<string, string[]> ToDictionary(this List<ValidationFailure> validationFailures)
-        {
-            Dictionary<string, string[]> failuresDictionary = new();
+        Dictionary<string, string[]> failuresDictionary = new();
 
-            var groupedFailures = validationFailures
-                .GroupBy(f => f.PropertyName)
-                .Select(g => new
-                {
-                    PropertyName = g.Key,
-                    Failures = g.ToArray()
-                });
-
-            foreach (var failure in groupedFailures)
+        var groupedFailures = validationFailures
+            .GroupBy(f => f.PropertyName)
+            .Select(g => new
             {
-                failuresDictionary.Add(failure.PropertyName, failure.Failures.Select(f => f.ErrorMessage).ToArray());
-            }
+                PropertyName = g.Key,
+                Failures = g.ToArray()
+            });
 
-            return failuresDictionary;
+        foreach (var failure in groupedFailures)
+        {
+            failuresDictionary.Add(failure.PropertyName, failure.Failures.Select(f => f.ErrorMessage).ToArray());
         }
+
+        return failuresDictionary;
     }
 }
