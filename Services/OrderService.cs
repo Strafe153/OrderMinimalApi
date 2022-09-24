@@ -1,4 +1,5 @@
-﻿using OrderMinimalApi.Models;
+﻿using Microsoft.Extensions.Caching.Memory;
+using OrderMinimalApi.Models;
 using OrderMinimalApi.Repositories;
 
 namespace OrderMinimalApi.Services;
@@ -6,25 +7,52 @@ namespace OrderMinimalApi.Services;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _repository;
+    private readonly IMemoryCache _memoryCache;
+    private readonly MemoryCacheEntryOptions _memoryCacheEntryOptions;
 
-    public OrderService(IOrderRepository repository)
+    public OrderService(
+        IOrderRepository repository,
+        IMemoryCache memoryCache)
     {
         _repository = repository;
+        _memoryCache = memoryCache;
+
+        _memoryCacheEntryOptions = new()
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2),
+            SlidingExpiration = TimeSpan.FromMinutes(3)
+        };
     }
 
     public async Task<IEnumerable<Order>> GetAllAsync()
     {
-        var orders = await _repository.GetAllAsync();
+        string key = "orders";
+        var orders = _memoryCache.Get<IEnumerable<Order>>(key);
+
+        if (orders is null)
+        {
+            orders = await _repository.GetAllAsync();
+            _memoryCache.Set(key, orders, _memoryCacheEntryOptions);
+        }
+
         return orders;
     }
 
     public async Task<Order> GetByIdAsync(string id)
     {
-        var order = await _repository.GetByIdAsync(id);
+        string key = $"orders:{id}";
+        var order = _memoryCache.Get<Order>(key);
 
         if (order is null)
         {
-            throw new NullReferenceException($"Order with id '{id}' not found");
+            order = await _repository.GetByIdAsync(id);
+
+            if (order is null)
+            {
+                throw new NullReferenceException($"Order with id '{id}' not found");
+            }
+
+            _memoryCache.Set(key, order, _memoryCacheEntryOptions);
         }
 
         return order;

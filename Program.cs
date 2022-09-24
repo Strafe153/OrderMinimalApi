@@ -21,6 +21,9 @@ builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IValidator<OrderCreateUpdateDto>, OrderCreateUpdateValidator>();
 
+// Add MemoryCache.
+builder.Services.AddMemoryCache();
+
 // Add Mapster.
 builder.Services.AddMapster();
 
