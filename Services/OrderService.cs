@@ -19,8 +19,8 @@ public class OrderService : IOrderService
 
         _memoryCacheEntryOptions = new()
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2),
-            SlidingExpiration = TimeSpan.FromMinutes(3)
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2),
+            SlidingExpiration = TimeSpan.FromSeconds(10)
         };
     }
 
