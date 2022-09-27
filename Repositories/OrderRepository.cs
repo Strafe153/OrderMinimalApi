@@ -16,15 +16,15 @@ public class OrderRepository : IOrderRepository
         _orders = mongoDatabase.GetCollection<Order>(orderDatabaseSettings.Value.OrdersCollectionName);
     }
 
-    public async Task<IEnumerable<Order>> GetAllAsync()
+    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default)
     {
-        var orders = await _orders.Find(_ => true).ToListAsync();
+        var orders = await _orders.Find(_ => true).ToListAsync(token);
         return orders;
     }
 
-    public async Task<Order?> GetByIdAsync(string id)
+    public async Task<Order?> GetByIdAsync(string id, CancellationToken token = default)
     {
-        var order = await _orders.Find(o => o.Id == id).SingleOrDefaultAsync();
+        var order = await _orders.Find(o => o.Id == id).SingleOrDefaultAsync(token);
         return order;
     }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json.Linq;
 using OrderMinimalApi.Models;
 using OrderMinimalApi.Repositories;
 
@@ -24,28 +25,28 @@ public class OrderService : IOrderService
         };
     }
 
-    public async Task<IEnumerable<Order>> GetAllAsync()
+    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default)
     {
         string key = "orders";
         var orders = _memoryCache.Get<IEnumerable<Order>>(key);
 
         if (orders is null)
         {
-            orders = await _repository.GetAllAsync();
+            orders = await _repository.GetAllAsync(token);
             _memoryCache.Set(key, orders, _memoryCacheEntryOptions);
         }
 
         return orders;
     }
 
-    public async Task<Order> GetByIdAsync(string id)
+    public async Task<Order> GetByIdAsync(string id, CancellationToken token = default)
     {
         string key = $"orders:{id}";
         var order = _memoryCache.Get<Order>(key);
 
         if (order is null)
         {
-            order = await _repository.GetByIdAsync(id);
+            order = await _repository.GetByIdAsync(id, token);
 
             if (order is null)
             {

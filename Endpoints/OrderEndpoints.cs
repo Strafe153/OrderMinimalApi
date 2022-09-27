@@ -19,17 +19,17 @@ public static class OrderEndpoints
         app.MapDelete("api/orders/{id}", DeleteAsync);
     }
 
-    public static async Task<IResult> GetAllAsync(IOrderService service, IMapper mapper)
+    public static async Task<IResult> GetAllAsync(IOrderService service, IMapper mapper, CancellationToken token)
     {
-        var orders = await service.GetAllAsync();
+        var orders = await service.GetAllAsync(token);
         var readDtos = mapper.Map<IEnumerable<OrderReadDto>>(orders);
 
         return Results.Ok(readDtos);
     }
 
-    public static async Task<IResult> GetAsync(IOrderService service, IMapper mapper, [FromRoute] string id)
+    public static async Task<IResult> GetAsync(IOrderService service, IMapper mapper, [FromRoute] string id, CancellationToken token)
     {
-        var order = await service.GetByIdAsync(id);
+        var order = await service.GetByIdAsync(id, token);
         var readDto = mapper.Map<OrderReadDto>(order);
 
         return Results.Ok(readDto);
