@@ -24,7 +24,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order?> GetByIdAsync(string id, CancellationToken token = default)
     {
-        var order = await _orders.Find(o => o.Id == id).SingleOrDefaultAsync(token);
+        var order = await _orders.Find(o => o.Id == id).FirstOrDefaultAsync(token);
         return order;
     }
 
