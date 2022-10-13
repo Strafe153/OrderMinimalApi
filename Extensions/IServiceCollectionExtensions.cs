@@ -11,7 +11,7 @@ public static class IServiceCollectionExtensions
         var config = TypeAdapterConfig.GlobalSettings;
         config.Scan(Assembly.GetExecutingAssembly());
 
-        Mapper mapper = new(config);
+        var mapper = new Mapper(config);
         services.AddSingleton<IMapper>(mapper);
     }
 }

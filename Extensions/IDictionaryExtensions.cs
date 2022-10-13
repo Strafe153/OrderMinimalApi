@@ -6,7 +6,7 @@ public static class IDictionaryExtensions
 {
     public static IDictionary<string, string[]> ToDictionary(this List<ValidationFailure> validationFailures)
     {
-        Dictionary<string, string[]> failuresDictionary = new();
+        var failuresDictionary = new Dictionary<string, string[]>();
 
         var groupedFailures = validationFailures
             .GroupBy(f => f.PropertyName)

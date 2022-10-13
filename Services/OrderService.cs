@@ -18,7 +18,7 @@ public class OrderService : IOrderService
         _repository = repository;
         _memoryCache = memoryCache;
 
-        _memoryCacheEntryOptions = new()
+        _memoryCacheEntryOptions = new MemoryCacheEntryOptions()
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2),
             SlidingExpiration = TimeSpan.FromSeconds(10)

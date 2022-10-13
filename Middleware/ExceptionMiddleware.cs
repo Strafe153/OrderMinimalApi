@@ -20,18 +20,15 @@ public class ExceptionMiddleware
         }
         catch (NullReferenceException ex)
         {
-            await HandleExceptionAsync(context, HttpStatusCode.NotFound,
-                $"{ex.Message}. Path:{context.Request.Path}.");
+            await HandleExceptionAsync(context, HttpStatusCode.NotFound, $"{ex.Message}. Path:{context.Request.Path}.");
         }
         catch (OperationCanceledException ex)
         {
-            await HandleExceptionAsync(context, HttpStatusCode.BadRequest,
-                $"{ex.Message}. Path:{context.Request.Path}.");
+            await HandleExceptionAsync(context, HttpStatusCode.BadRequest, $"{ex.Message}. Path:{context.Request.Path}.");
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
-               $"{ex.Message}. Path:{context.Request.Path}.");
+            await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, $"{ex.Message}. Path:{context.Request.Path}.");
         }
     }
 
