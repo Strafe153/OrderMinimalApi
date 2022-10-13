@@ -7,7 +7,7 @@ public class Order
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; } = default!;
 
     public string CustomerName { get; set; } = default!;
     public string Address { get; set; } = default!;
