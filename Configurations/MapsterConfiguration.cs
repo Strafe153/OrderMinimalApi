@@ -2,11 +2,11 @@
 using MapsterMapper;
 using System.Reflection;
 
-namespace OrderMinimalApi.Extensions;
+namespace OrderMinimalApi.Configurations;
 
-public static class IServiceCollectionExtensions
+public static class MapsterConfiguration
 {
-    public static void AddMapster(this IServiceCollection services)
+    public static void ConfigureMapster(this IServiceCollection services)
     {
         var config = TypeAdapterConfig.GlobalSettings;
         config.Scan(Assembly.GetExecutingAssembly());

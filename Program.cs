@@ -1,43 +1,25 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using OrderMinimalApi.Dtos;
+using OrderMinimalApi.Configurations;
 using OrderMinimalApi.Endpoints;
-using OrderMinimalApi.Extensions;
-using OrderMinimalApi.Middleware;
-using OrderMinimalApi.Models;
-using OrderMinimalApi.Repositories;
-using OrderMinimalApi.Services;
-using OrderMinimalApi.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure MongoDb database.
-builder.Services.Configure<OrderDatabaseSettings>(
-    builder.Configuration.GetSection("OrderDatabase"));
+builder.Services.ConfigureDatabase(builder.Configuration);
 
-// Add repositories and services, validators
-builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IValidator<OrderCreateUpdateDto>, OrderCreateUpdateValidator>();
+builder.Services.AddRepositories();
+builder.Services.AddCustomServices();
+builder.Services.AddCustomValidators();
 
-// Add MemoryCache.
 builder.Services.AddMemoryCache();
 
-// Add Mapster.
-builder.Services.AddMapster();
-
-// Add FluentValidation.
-builder.Services
-    .AddFluentValidationAutoValidation()
-    .AddFluentValidationClientsideAdapters();
+builder.Services.ConfigureMapster();
+builder.Services.ConfigureFluentValidation();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Add custom middleware.
-app.AddApplicationMiddleware();
+app.AddCustomMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
