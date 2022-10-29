@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using OrderMinimalApi.Models;
+using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.Repositories;
 

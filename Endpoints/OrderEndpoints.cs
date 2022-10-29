@@ -3,8 +3,8 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Extensions;
-using OrderMinimalApi.Models;
 using OrderMinimalApi.Services;
+using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.Endpoints;
 

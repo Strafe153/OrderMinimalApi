@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using OrderMinimalApi.Dtos;
-using OrderMinimalApi.Models;
+using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.MappingRegistrations;
 

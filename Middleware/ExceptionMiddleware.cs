@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrderMinimalApi.Models;
 using OrderMinimalApi.Shared;
 using System.Net;
 using System.Text.Json;
@@ -21,36 +20,51 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
-        catch (NullReferenceException ex)
-        {
-            await HandleExceptionAsync(context, HttpStatusCode.NotFound, ex.Message, RFCType.NotFound);
-        }
-        catch (OperationCanceledException ex)
-        {
-            await HandleExceptionAsync(context, HttpStatusCode.BadRequest, ex.Message, RFCType.BadRequest);
-        }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, ex.Message, RFCType.InternalServerError);
+            await HandleExceptionAsync(context, ex);
         }
     }
 
-    private Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, string message, string rfcType)
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        var statusCode = GetHttpStatusCode(exception);
+        int statusCodeAsInt = (int)statusCode;
+
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)statusCode;
+        context.Response.StatusCode = statusCodeAsInt;
 
         var problemDetails = new ProblemDetails()
         {
-            Type = rfcType,
-            Title = message,
-            Status = (int)statusCode,
-            Detail = message,
+            Type = GetRFCType(statusCode),
+            Title = exception.Message,
+            Status = statusCodeAsInt,
+            Detail = exception.Message,
             Instance = context.Request.Path
         };
 
         var json = JsonSerializer.Serialize(problemDetails);
 
         return context.Response.WriteAsync(json);
+    }
+
+    private static HttpStatusCode GetHttpStatusCode(Exception exception)
+    {
+        return exception switch
+        {
+            NullReferenceException => HttpStatusCode.NotFound,
+            OperationCanceledException => HttpStatusCode.BadRequest,
+            _ => HttpStatusCode.InternalServerError
+        };
+    }
+
+    private static string GetRFCType(HttpStatusCode statusCode)
+    {
+        return statusCode switch
+        {
+            HttpStatusCode.NotFound => RFCType.NotFound,
+            HttpStatusCode.BadRequest => RFCType.BadRequest,
+            _ => RFCType.InternalServerError
+        };
     }
 }
