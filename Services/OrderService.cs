@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using OrderMinimalApi.Models;
 using OrderMinimalApi.Repositories;
+using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.Services;
 

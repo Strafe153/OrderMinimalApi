@@ -1,4 +1,4 @@
-﻿namespace OrderMinimalApi.Models;
+﻿namespace OrderMinimalApi.Shared;
 
 public class OrderDatabaseSettings
 {
