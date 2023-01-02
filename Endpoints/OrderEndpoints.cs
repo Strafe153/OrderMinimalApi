@@ -19,7 +19,10 @@ public static class OrderEndpoints
         app.MapDelete("api/orders/{id}", DeleteAsync);
     }
 
-    public static async Task<IResult> GetAllAsync(IOrderService service, IMapper mapper, CancellationToken token)
+    public static async Task<IResult> GetAllAsync(
+        [FromServices] IOrderService service, 
+        [FromServices] IMapper mapper, 
+        CancellationToken token)
     {
         var orders = await service.GetAllAsync(token);
         var readDtos = mapper.Map<IEnumerable<OrderReadDto>>(orders);
@@ -27,7 +30,11 @@ public static class OrderEndpoints
         return Results.Ok(readDtos);
     }
 
-    public static async Task<IResult> GetAsync(IOrderService service, IMapper mapper, [FromRoute] string id, CancellationToken token)
+    public static async Task<IResult> GetAsync(
+        [FromServices] IOrderService service, 
+        [FromServices] IMapper mapper, 
+        [FromRoute] string id, 
+        CancellationToken token)
     {
         var order = await service.GetByIdAsync(id, token);
         var readDto = mapper.Map<OrderReadDto>(order);
@@ -35,7 +42,10 @@ public static class OrderEndpoints
         return Results.Ok(readDto);
     }
 
-    public static async Task<IResult> CreateAsync(IOrderService service, IMapper mapper, IValidator<OrderCreateUpdateDto> validator,
+    public static async Task<IResult> CreateAsync(
+        [FromServices] IOrderService service, 
+        [FromServices] IMapper mapper, 
+        [FromServices] IValidator<OrderCreateUpdateDto> validator,
         [FromBody] OrderCreateUpdateDto createDto)
     {
         var validationResult = validator.Validate(createDto);
@@ -55,8 +65,12 @@ public static class OrderEndpoints
         return Results.ValidationProblem(failuresDictionary);
     }
 
-    public static async Task<IResult> UpdateAsync(IOrderService service, IMapper mapper, IValidator<OrderCreateUpdateDto> validator,
-        [FromRoute] string id, [FromBody] OrderCreateUpdateDto updateDto)
+    public static async Task<IResult> UpdateAsync(
+        [FromServices] IOrderService service, 
+        [FromServices] IMapper mapper, 
+        [FromServices] IValidator<OrderCreateUpdateDto> validator,
+        [FromRoute] string id, 
+        [FromBody] OrderCreateUpdateDto updateDto)
     {
         var validationResult = validator.Validate(updateDto);
 
@@ -75,7 +89,10 @@ public static class OrderEndpoints
         return Results.ValidationProblem(failuresDictionary);
     }
 
-    public static async Task<IResult> DeleteAsync(IOrderService service, IMapper mapper, [FromRoute] string id)
+    public static async Task<IResult> DeleteAsync(
+        [FromServices] IOrderService service, 
+        [FromServices] IMapper mapper, 
+        [FromRoute] string id)
     {
         await service.DeleteAsync(id);
         return Results.NoContent();
