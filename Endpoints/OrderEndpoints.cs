@@ -1,10 +1,8 @@
 ﻿using FluentValidation;
-using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Extensions;
 using OrderMinimalApi.Services;
-using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.Endpoints;
 
@@ -20,31 +18,18 @@ public static class OrderEndpoints
     }
 
     public static async Task<IResult> GetAllAsync(
-        [FromServices] IOrderService service, 
-        [FromServices] IMapper mapper, 
-        CancellationToken token)
-    {
-        var orders = await service.GetAllAsync(token);
-        var readDtos = mapper.Map<IEnumerable<OrderReadDto>>(orders);
-
-        return Results.Ok(readDtos);
-    }
+        [FromServices] IOrderService service,
+        CancellationToken token) =>
+            Results.Ok(await service.GetAllAsync(token));
 
     public static async Task<IResult> GetAsync(
-        [FromServices] IOrderService service, 
-        [FromServices] IMapper mapper, 
-        [FromRoute] string id, 
-        CancellationToken token)
-    {
-        var order = await service.GetByIdAsync(id, token);
-        var readDto = mapper.Map<OrderReadDto>(order);
-
-        return Results.Ok(readDto);
-    }
+        [FromServices] IOrderService service,
+        [FromRoute] string id,
+        CancellationToken token) =>
+            Results.Ok(await service.GetByIdAsync(id, token));
 
     public static async Task<IResult> CreateAsync(
-        [FromServices] IOrderService service, 
-        [FromServices] IMapper mapper, 
+        [FromServices] IOrderService service,
         [FromServices] IValidator<OrderCreateUpdateDto> validator,
         [FromBody] OrderCreateUpdateDto createDto)
     {
@@ -52,12 +37,8 @@ public static class OrderEndpoints
 
         if (validationResult.IsValid)
         {
-            var order = mapper.Map<Order>(createDto);
-            await service.CreateAsync(order);
-
-            var readDto = mapper.Map<OrderReadDto>(order);
-
-            return Results.Created($"api/orders/{order.Id}", readDto);
+            var readDto = await service.CreateAsync(createDto);
+            return Results.Created($"api/orders/{readDto.Id}", readDto);
         }
 
         var failuresDictionary = validationResult.Errors.ToDictionary();
@@ -66,8 +47,7 @@ public static class OrderEndpoints
     }
 
     public static async Task<IResult> UpdateAsync(
-        [FromServices] IOrderService service, 
-        [FromServices] IMapper mapper, 
+        [FromServices] IOrderService service,
         [FromServices] IValidator<OrderCreateUpdateDto> validator,
         [FromRoute] string id, 
         [FromBody] OrderCreateUpdateDto updateDto)
@@ -76,11 +56,7 @@ public static class OrderEndpoints
 
         if (validationResult.IsValid)
         {
-            var order = await service.GetByIdAsync(id);
-
-            mapper.Map(updateDto, order);
-            await service.UpdateAsync(id, order);
-
+            await service.UpdateAsync(id, updateDto);
             return Results.NoContent();
         }
 
@@ -90,8 +66,7 @@ public static class OrderEndpoints
     }
 
     public static async Task<IResult> DeleteAsync(
-        [FromServices] IOrderService service, 
-        [FromServices] IMapper mapper, 
+        [FromServices] IOrderService service,
         [FromRoute] string id)
     {
         await service.DeleteAsync(id);

@@ -9,7 +9,8 @@ public static class FluentValidationConfiguration
 {
     public static void ConfigureFluentValidation(this IServiceCollection services)
     {
-        services.AddFluentValidationAutoValidation()
+        services
+            .AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
     }
 

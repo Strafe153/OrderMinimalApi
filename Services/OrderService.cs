@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Mapster;
+using MapsterMapper;
+using Microsoft.Extensions.Caching.Memory;
+using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Repositories;
 using OrderMinimalApi.Shared;
 
@@ -8,14 +11,17 @@ public class OrderService : IOrderService
 {
     private readonly IOrderRepository _repository;
     private readonly IMemoryCache _memoryCache;
+    private readonly IMapper _mapper;
     private readonly MemoryCacheEntryOptions _memoryCacheEntryOptions;
 
     public OrderService(
         IOrderRepository repository,
-        IMemoryCache memoryCache)
+        IMemoryCache memoryCache,
+        IMapper mapper)
     {
         _repository = repository;
         _memoryCache = memoryCache;
+        _mapper = mapper;
 
         _memoryCacheEntryOptions = new MemoryCacheEntryOptions()
         {
@@ -24,9 +30,9 @@ public class OrderService : IOrderService
         };
     }
 
-    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default)
+    public async Task<IEnumerable<OrderReadDto>> GetAllAsync(CancellationToken token = default)
     {
-        string key = "orders";
+        var key = "orders";
         var orders = _memoryCache.Get<IEnumerable<Order>>(key);
 
         if (orders is null)
@@ -35,12 +41,12 @@ public class OrderService : IOrderService
             _memoryCache.Set(key, orders, _memoryCacheEntryOptions);
         }
 
-        return orders;
+        return orders.Adapt<IEnumerable<OrderReadDto>>();
     }
 
-    public async Task<Order> GetByIdAsync(string id, CancellationToken token = default)
+    public async Task<OrderReadDto> GetByIdAsync(string id, CancellationToken token = default)
     {
-        string key = $"orders:{id}";
+        var key = $"orders:{id}";
         var order = _memoryCache.Get<Order>(key);
 
         if (order is null)
@@ -55,19 +61,26 @@ public class OrderService : IOrderService
             _memoryCache.Set(key, order, _memoryCacheEntryOptions);
         }
 
-        return order;
+        return order.Adapt<OrderReadDto>();
     }
 
-    public async Task CreateAsync(Order order)
+    public async Task<OrderReadDto> CreateAsync(OrderCreateUpdateDto dto)
     {
+        var order = dto.Adapt<Order>();
         await _repository.CreateAsync(order);
+
+        return order.Adapt<OrderReadDto>();
     }
 
-    public async Task UpdateAsync(string id, Order newOrder)
+    public async Task UpdateAsync(string id, OrderCreateUpdateDto newOrderDto)
     {
         try
         {
-            await _repository.UpdateAsync(id, newOrder);
+            var readDto = await GetByIdAsync(id);
+            newOrderDto.Adapt(readDto);
+
+            var order = readDto.Adapt<Order>();
+            await _repository.UpdateAsync(id, order);
         }
         catch (Exception)
         {

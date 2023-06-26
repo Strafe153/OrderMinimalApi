@@ -29,7 +29,7 @@ public class ExceptionMiddleware
     private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var statusCode = GetHttpStatusCode(exception);
-        int statusCodeAsInt = (int)statusCode;
+        var statusCodeAsInt = (int)statusCode;
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCodeAsInt;
@@ -48,23 +48,19 @@ public class ExceptionMiddleware
         return context.Response.WriteAsync(json);
     }
 
-    private static HttpStatusCode GetHttpStatusCode(Exception exception)
-    {
-        return exception switch
+    private static HttpStatusCode GetHttpStatusCode(Exception exception) =>
+        exception switch
         {
             NullReferenceException => HttpStatusCode.NotFound,
             OperationCanceledException => HttpStatusCode.BadRequest,
             _ => HttpStatusCode.InternalServerError
         };
-    }
 
-    private static string GetRFCType(HttpStatusCode statusCode)
-    {
-        return statusCode switch
+    private static string GetRFCType(HttpStatusCode statusCode) =>
+        statusCode switch
         {
             HttpStatusCode.NotFound => RFCType.NotFound,
             HttpStatusCode.BadRequest => RFCType.BadRequest,
             _ => RFCType.InternalServerError
         };
-    }
 }

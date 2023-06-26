@@ -16,30 +16,18 @@ public class OrderRepository : IOrderRepository
         _orders = mongoDatabase.GetCollection<Order>(orderDatabaseSettings.Value.OrdersCollectionName);
     }
 
-    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default)
-    {
-        var orders = await _orders.Find(_ => true).ToListAsync(token);
-        return orders;
-    }
+    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default) =>
+        await _orders.Find(_ => true).ToListAsync(token);
 
-    public async Task<Order?> GetByIdAsync(string id, CancellationToken token = default)
-    {
-        var order = await _orders.Find(o => o.Id == id).FirstOrDefaultAsync(token);
-        return order;
-    }
+    public async Task<Order?> GetByIdAsync(string id, CancellationToken token = default) =>
+        await _orders.Find(o => o.Id == id).FirstOrDefaultAsync(token);
 
-    public async Task CreateAsync(Order order)
-    {
+    public async Task CreateAsync(Order order) =>
         await _orders.InsertOneAsync(order);
-    }
 
-    public async Task UpdateAsync(string id, Order newOrder)
-    {
+    public async Task UpdateAsync(string id, Order newOrder) =>
         await _orders.ReplaceOneAsync(o => o.Id == id, newOrder);
-    }
 
-    public async Task DeleteAsync(string id)
-    {
+    public async Task DeleteAsync(string id) =>
         await _orders.DeleteOneAsync(o => o.Id == id);
-    }
 }

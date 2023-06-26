@@ -41,15 +41,8 @@ public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateUpdateDto
             .WithMessage("Damage must not be greater than 100000");
     }
 
-    private bool BeOfFormat(string name)
-    {
-        Regex regex = new("[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]+");
-
-        if (regex.Match(name).Length > 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
+    private bool BeOfFormat(string name) =>
+        name is not null 
+            ? new Regex("[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]+").Match(name).Length > 0
+            : false;
 }

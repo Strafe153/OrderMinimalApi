@@ -1,12 +1,13 @@
-﻿using OrderMinimalApi.Shared;
+﻿using OrderMinimalApi.Dtos;
+using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.Services;
 
 public interface IOrderService
 {
-    Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default);
-    Task<Order> GetByIdAsync(string id, CancellationToken token = default);
-    Task CreateAsync(Order order);
-    Task UpdateAsync(string id, Order newOrder);
+    Task<IEnumerable<OrderReadDto>> GetAllAsync(CancellationToken token = default);
+    Task<OrderReadDto> GetByIdAsync(string id, CancellationToken token = default);
+    Task<OrderReadDto> CreateAsync(OrderCreateUpdateDto dto);
+    Task UpdateAsync(string id, OrderCreateUpdateDto newOrderDto);
     Task DeleteAsync(string id);
 }
