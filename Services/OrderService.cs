@@ -11,17 +11,14 @@ public class OrderService : IOrderService
 {
     private readonly IOrderRepository _repository;
     private readonly IMemoryCache _memoryCache;
-    private readonly IMapper _mapper;
     private readonly MemoryCacheEntryOptions _memoryCacheEntryOptions;
 
     public OrderService(
         IOrderRepository repository,
-        IMemoryCache memoryCache,
-        IMapper mapper)
+        IMemoryCache memoryCache)
     {
         _repository = repository;
         _memoryCache = memoryCache;
-        _mapper = mapper;
 
         _memoryCacheEntryOptions = new MemoryCacheEntryOptions()
         {
