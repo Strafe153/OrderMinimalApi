@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Asp.Versioning.Builder;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Extensions;
@@ -8,13 +9,27 @@ namespace OrderMinimalApi.Endpoints;
 
 public static class OrderEndpoints
 {
-    public static void MapOrderEndpoints(this WebApplication app)
+    public static void MapOrderEndpoints(this WebApplication app, ApiVersionSet apiVersionSet)
     {
-        app.MapGet("api/orders", GetAllAsync);
-        app.MapGet("api/orders/{id}", GetAsync);
-        app.MapPost("api/orders", CreateAsync);
-        app.MapPut("api/orders/{id}", UpdateAsync);
-        app.MapDelete("api/orders/{id}", DeleteAsync);
+        app.MapGet("v{version:apiVersion}/api/orders", GetAllAsync)
+            .WithApiVersionSet(apiVersionSet)
+            .MapToApiVersion(1, 0);
+
+        app.MapGet("v{version:apiVersion}/api/orders/{id}", GetAsync)
+            .WithApiVersionSet(apiVersionSet)
+            .MapToApiVersion(1, 0);
+
+        app.MapPost("v{version:apiVersion}/api/orders", CreateAsync)
+            .WithApiVersionSet(apiVersionSet)
+            .MapToApiVersion(1, 0);
+
+        app.MapPut("v{version:apiVersion}/api/orders/{id}", UpdateAsync)
+            .WithApiVersionSet(apiVersionSet)
+            .MapToApiVersion(1, 0);
+
+        app.MapDelete("v{version:apiVersion}/api/orders/{id}", DeleteAsync)
+            .WithApiVersionSet(apiVersionSet)
+            .MapToApiVersion(1, 0);
     }
 
     public static async Task<IResult> GetAllAsync(
