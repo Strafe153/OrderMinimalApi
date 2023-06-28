@@ -8,3 +8,4 @@
 * `MongoDB.Driver` for MongoDB
 * `Mapster` for DTO mapping
 * `FluentValidation` for DTO validation
+* `Api.Versioning.Http` for API versioning
