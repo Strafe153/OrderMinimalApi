@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace OrderMinimalApi.Configurations;
 
@@ -11,6 +12,12 @@ public static class ApiVersioningConfiguration
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ReportApiVersions = true;
-        });
+            options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        })
+            .AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
     }
 }
