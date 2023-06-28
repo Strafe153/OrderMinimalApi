@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace OrderMinimalApi.Configurations;
 

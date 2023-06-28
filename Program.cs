@@ -1,4 +1,3 @@
-using Asp.Versioning;
 using OrderMinimalApi.Configurations;
 using OrderMinimalApi.Endpoints;
 
@@ -33,11 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var versionSet = app.NewApiVersionSet()
-    .HasApiVersion(new ApiVersion(1, 0))
-    .Build();
-
 // Add Order endpoints.
-app.MapOrderEndpoints(versionSet);
+app.MapOrderEndpoints();
 
 app.Run();
