@@ -4,6 +4,7 @@ using OrderMinimalApi.Endpoints;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureDatabase(builder.Configuration);
+builder.Services.ConfigureHealthChecks(builder.Configuration);
 
 builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
@@ -15,7 +16,6 @@ builder.Services.ConfigureMapster();
 builder.Services.ConfigureFluentValidation();
 
 builder.Services.ConfigureApiVersioning();
-
 builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
@@ -29,6 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseHealthChecks();
 
 // Add Order endpoints.
 app.MapOrderEndpoints();
