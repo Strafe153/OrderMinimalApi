@@ -6,6 +6,6 @@
 
 ## Dependencies
 * `MongoDB.Driver` for MongoDB
+* `Asp.Versioning.Http` for API versioning
 * `Mapster` for DTO mapping
 * `FluentValidation` for DTO validation
-* `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` for API versioning
