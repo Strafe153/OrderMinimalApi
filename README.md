@@ -7,5 +7,7 @@
 ## Dependencies
 * `MongoDB.Driver` for MongoDB
 * `Asp.Versioning.Http` for API versioning
+* `AspNetCore.HealthChecks.UI.Client` for detailed health checks information
+* `AspNetCore.HealthChecks.MongoDb` for MongoDB health check
 * `Mapster` for DTO mapping
 * `FluentValidation` for DTO validation
