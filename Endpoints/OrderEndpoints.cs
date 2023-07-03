@@ -9,16 +9,16 @@ public static class OrderEndpoints
 {
     public static void MapOrderEndpoints(this WebApplication app)
     {
-        app.MapGet("v{version:apiVersion}/api/orders", GetAllAsync);
-        app.MapGet("v{version:apiVersion}/api/orders/{id}", GetAsync);
+        app.MapGet("api/v{version:apiVersion}/orders", GetAllAsync);
+        app.MapGet("api/v{version:apiVersion}/orders/{id}", GetAsync);
 
-        app.MapPost("v{version:apiVersion}/api/orders", CreateAsync)
+        app.MapPost("api/v{version:apiVersion}/orders", CreateAsync)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
-        app.MapPut("v{version:apiVersion}/api/orders/{id}", UpdateAsync)
+        app.MapPut("api/v{version:apiVersion}/orders/{id}", UpdateAsync)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
-        app.MapDelete("v{version:apiVersion}/api/orders/{id}", DeleteAsync);
+        app.MapDelete("api/v{version:apiVersion}/orders/{id}", DeleteAsync);
     }
 
     public static async Task<IResult> GetAllAsync(

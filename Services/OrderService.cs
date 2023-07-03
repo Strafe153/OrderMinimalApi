@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Caching.Memory;
 using OrderMinimalApi.Dtos;
+using OrderMinimalApi.Entities;
 using OrderMinimalApi.Repositories;
-using OrderMinimalApi.Shared;
 
 namespace OrderMinimalApi.Services;
 

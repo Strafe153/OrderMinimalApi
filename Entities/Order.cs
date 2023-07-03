@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace OrderMinimalApi.Shared;
+namespace OrderMinimalApi.Entities;
 
 public class Order
 {

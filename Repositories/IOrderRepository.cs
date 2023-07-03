@@ -1,4 +1,4 @@
-﻿using OrderMinimalApi.Shared;
+﻿using OrderMinimalApi.Entities;
 
 namespace OrderMinimalApi.Repositories;
 

@@ -34,7 +34,7 @@ public class ExceptionMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCodeAsInt;
 
-        var problemDetails = new ProblemDetails()
+        var problemDetails = new ProblemDetails
         {
             Type = GetRFCType(statusCode),
             Title = exception.Message,
