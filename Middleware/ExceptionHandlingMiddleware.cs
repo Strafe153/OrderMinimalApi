@@ -5,11 +5,11 @@ using System.Text.Json;
 
 namespace OrderMinimalApi.Middleware;
 
-public class ExceptionMiddleware
+public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionHandlingMiddleware(RequestDelegate next)
     {
         _next = next;
     }

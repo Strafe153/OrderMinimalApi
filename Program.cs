@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.ConfigureHealthChecks(builder.Configuration);
+builder.Services.ConfigureRateLimiting(builder.Configuration);
 
 builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
@@ -20,8 +21,6 @@ builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
-app.AddCustomMiddleware();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -31,6 +30,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseHealthChecks();
+
+app.UseRateLimiter();
+
+app.AddCustomMiddleware();
 
 // Add Order endpoints.
 app.MapOrderEndpoints();

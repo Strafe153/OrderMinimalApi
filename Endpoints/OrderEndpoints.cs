@@ -9,16 +9,22 @@ public static class OrderEndpoints
 {
     public static void MapOrderEndpoints(this WebApplication app)
     {
-        app.MapGet("api/v{version:apiVersion}/orders", GetAllAsync);
-        app.MapGet("api/v{version:apiVersion}/orders/{id}", GetAsync);
+        app.MapGet("api/v{version:apiVersion}/orders", GetAllAsync)
+            .RequireRateLimiting("tokenBucket");
+
+        app.MapGet("api/v{version:apiVersion}/orders/{id}", GetAsync)
+            .RequireRateLimiting("tokenBucket");
 
         app.MapPost("api/v{version:apiVersion}/orders", CreateAsync)
-            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
+            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>()
+            .RequireRateLimiting("tokenBucket");
 
         app.MapPut("api/v{version:apiVersion}/orders/{id}", UpdateAsync)
-            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
+            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>()
+            .RequireRateLimiting("tokenBucket");
 
-        app.MapDelete("api/v{version:apiVersion}/orders/{id}", DeleteAsync);
+        app.MapDelete("api/v{version:apiVersion}/orders/{id}", DeleteAsync)
+            .RequireRateLimiting("tokenBucket");
     }
 
     public static async Task<IResult> GetAllAsync(

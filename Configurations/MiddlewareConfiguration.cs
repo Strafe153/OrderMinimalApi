@@ -6,6 +6,6 @@ public static class MiddlewareConfiguration
 {
     public static void AddCustomMiddleware(this IApplicationBuilder builder)
     {
-        builder.UseMiddleware<ExceptionMiddleware>();
+        builder.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }
