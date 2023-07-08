@@ -9,22 +9,21 @@ public static class OrderEndpoints
 {
     public static void MapOrderEndpoints(this WebApplication app)
     {
-        app.MapGet("api/v{version:apiVersion}/orders", GetAllAsync)
+        var orderEndpointsGroup = app
+            .MapGroup("api/v{version:apiVersion}/orders")
             .RequireRateLimiting("tokenBucket");
 
-        app.MapGet("api/v{version:apiVersion}/orders/{id}", GetAsync)
-            .RequireRateLimiting("tokenBucket");
+        orderEndpointsGroup.MapGet(string.Empty, GetAllAsync);
 
-        app.MapPost("api/v{version:apiVersion}/orders", CreateAsync)
-            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>()
-            .RequireRateLimiting("tokenBucket");
+        orderEndpointsGroup.MapGet("{id}", GetAsync);
 
-        app.MapPut("api/v{version:apiVersion}/orders/{id}", UpdateAsync)
-            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>()
-            .RequireRateLimiting("tokenBucket");
+        orderEndpointsGroup.MapPost(string.Empty, CreateAsync)
+            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
-        app.MapDelete("api/v{version:apiVersion}/orders/{id}", DeleteAsync)
-            .RequireRateLimiting("tokenBucket");
+        orderEndpointsGroup.MapPut("{id}", UpdateAsync)
+            .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
+
+        orderEndpointsGroup.MapDelete("{id}", DeleteAsync);
     }
 
     public static async Task<IResult> GetAllAsync(
