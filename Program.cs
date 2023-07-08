@@ -33,7 +33,7 @@ app.UseHealthChecks();
 
 app.UseRateLimiter();
 
-app.AddCustomMiddleware();
+app.UseCustomMiddleware();
 
 // Add Order endpoints.
 app.MapOrderEndpoints();
