@@ -21,6 +21,8 @@ builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
+app.UseCustomMiddleware();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -32,8 +34,6 @@ app.UseHttpsRedirection();
 app.UseHealthChecks();
 
 app.UseRateLimiter();
-
-app.UseCustomMiddleware();
 
 // Add Order endpoints.
 app.MapOrderEndpoints();
