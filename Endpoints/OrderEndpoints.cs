@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using OrderMinimalApi.Dtos;
 using OrderMinimalApi.Filters;
 using OrderMinimalApi.Services;
@@ -26,39 +27,39 @@ public static class OrderEndpoints
         orderEndpointsGroup.MapDelete("{id}", DeleteAsync);
     }
 
-    public static async Task<IResult> GetAllAsync(
+    public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAllAsync(
         [FromServices] IOrderService service,
         CancellationToken token) =>
-            Results.Ok(await service.GetAllAsync(token));
+            TypedResults.Ok(await service.GetAllAsync(token));
 
-    public static async Task<IResult> GetAsync(
+    public static async Task<Ok<OrderReadDto>> GetAsync(
         [FromServices] IOrderService service,
         [FromRoute] string id,
         CancellationToken token) =>
-            Results.Ok(await service.GetByIdAsync(id, token));
+            TypedResults.Ok(await service.GetByIdAsync(id, token));
 
-    public static async Task<IResult> CreateAsync(
+    public static async Task<Created<OrderReadDto>> CreateAsync(
         [FromServices] IOrderService service,
         [FromBody] OrderCreateUpdateDto createDto)
     {
         var readDto = await service.CreateAsync(createDto);
-        return Results.Created($"api/orders/{readDto.Id}", readDto);
+        return TypedResults.Created($"api/orders/{readDto.Id}", readDto);
     }
 
-    public static async Task<IResult> UpdateAsync(
+    public static async Task<NoContent> UpdateAsync(
         [FromServices] IOrderService service,
         [FromRoute] string id, 
         [FromBody] OrderCreateUpdateDto updateDto)
     {
         await service.UpdateAsync(id, updateDto);
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 
-    public static async Task<IResult> DeleteAsync(
+    public static async Task<NoContent> DeleteAsync(
         [FromServices] IOrderService service,
         [FromRoute] string id)
     {
         await service.DeleteAsync(id);
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 }
