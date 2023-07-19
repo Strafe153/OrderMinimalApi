@@ -36,6 +36,6 @@ app.UseHealthChecks();
 app.UseRateLimiter();
 
 // Add Order endpoints.
-app.MapOrderEndpoints();
+app.UseOrderEndpoints();
 
 app.Run();

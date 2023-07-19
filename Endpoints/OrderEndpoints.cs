@@ -8,7 +8,7 @@ namespace OrderMinimalApi.Endpoints;
 
 public static class OrderEndpoints
 {
-    public static void MapOrderEndpoints(this WebApplication app)
+    public static void UseOrderEndpoints(this WebApplication app)
     {
         var orderEndpointsGroup = app
             .MapGroup("api/v{version:apiVersion}/orders")
