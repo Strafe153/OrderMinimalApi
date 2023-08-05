@@ -1,20 +1,23 @@
-# syntax=docker/dockerfile:1
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+# https://hub.docker.com/_/microsoft-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
-    
-# Copy csproj and restore as distinct layers
+
+# copy csproj and restore as distinct layers
 COPY ../*.sln ./
-COPY ../MinimalApi/*.csproj ./
-COPY ../Tests/ServiceTests/*.csproj ./
+COPY ../MinimalApi/*.csproj ./MinimalApi/
+COPY ../Tests/Services.Tests/*.csproj ./Tests/Services.Tests/
+COPY ../Tests/Endpoints.Tests/*.csproj ./Tests/Endpoints.Tests/
 RUN dotnet restore
-    
-# Copy everything else and build
+
+# copy everything else and build app
 COPY ../MinimalApi/. ./MinimalApi/
-COPY ../Tests/ServiceTests/. ./Tests/ServiceTests/
-RUN dotnet publish -c Release -o out
-    
-# Build runtime image
+COPY ../Tests/Services.Tests/. ./Tests/Services.Tests/
+COPY ../Tests/Endpoints.Tests/. ./Tests/Endpoints.Tests/
+WORKDIR /app/MinimalApi
+RUN dotnet publish -c release -o /app/out
+
+# final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "OrderMinimalApi.dll"]
+COPY --from=build /app/out ./
+ENTRYPOINT ["dotnet", "MinimalApi.dll"]

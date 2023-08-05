@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MinimalApi.Exceptions;
 using MinimalApi.Shared;
 using System.Net;
 using System.Text.Json;
@@ -52,7 +53,8 @@ public class ExceptionHandlingMiddleware
         exception switch
         {
             NullReferenceException => HttpStatusCode.NotFound,
-            OperationCanceledException => HttpStatusCode.BadRequest,
+            OperationFailedException
+                or OperationCanceledException => HttpStatusCode.BadRequest,
             _ => HttpStatusCode.InternalServerError
         };
 

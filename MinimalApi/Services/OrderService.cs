@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MinimalApi.Dtos;
 using MinimalApi.Entities;
+using MinimalApi.Exceptions;
 using MinimalApi.Repositories.Abstractions;
 using MinimalApi.Services.Abstractions;
 using MinimalApi.Shared;
@@ -52,7 +53,7 @@ public class OrderService : IOrderService
 
             if (order is null)
             {
-                throw new NullReferenceException($"Order with id '{id}' not found");
+                throw new NullReferenceException($"Order with id '{id}' not found.");
             }
 
             _cacheService.Set(key, order, _cacheOptions);
@@ -82,19 +83,21 @@ public class OrderService : IOrderService
         }
         catch (Exception)
         {
-            throw new NullReferenceException($"Order with id '{id}' not found");
+            throw new OperationFailedException($"Failed to update an order with id={id}.");
         }
     }
 
     public async Task DeleteAsync(string id)
     {
+        await GetByIdAsync(id);
+
         try
         {
             await _repository.DeleteAsync(id);
         }
         catch (Exception)
         {
-            throw new NullReferenceException($"Order with id '{id}' not found");
+            throw new OperationFailedException($"Failed to delete an order with id={id}.");
         }
     }
 }
