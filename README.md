@@ -8,8 +8,9 @@
 * `AspNetCore.HealthChecks.MongoDb` for MongoDB health check
 * `AspNetCore.HealthChecks.UI.Client` for detailed health checks information
 * `AutoFixture` for test fixtures
-* `AutoFixture.AutoFakeItEasy` for test fixtures with FakeItEasy
+* `AutoFixture.AutoFakeItEasy` for FakeItEasy support with AutoFixture
 * `Bogus` for fake data generation
+* `FakeItEasy` for mocking
 * `FluentAssertions` for assertions
 * `FluentValidation` for DTO validation
 * `FluentValidation.AspNetCore` for ASP.NET Core integration with FluentValidation
