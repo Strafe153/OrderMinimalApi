@@ -1,5 +1,4 @@
 ﻿using MinimalApi.Dtos;
-using MinimalApi.Shared;
 
 namespace MinimalApi.Services.Abstractions;
 

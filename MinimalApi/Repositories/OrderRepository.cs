@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 using MinimalApi.Entities;
-using MinimalApi.Shared;
 using MinimalApi.Repositories.Abstractions;
+using MinimalApi.Shared;
+using MongoDB.Driver;
 
 namespace MinimalApi.Repositories;
 
