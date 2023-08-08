@@ -5,14 +5,20 @@ WORKDIR /app
 # copy csproj and restore as distinct layers
 COPY ../*.sln ./
 COPY ../MinimalApi/*.csproj ./MinimalApi/
-COPY ../Tests/Services.Tests/*.csproj ./Tests/Services.Tests/
-COPY ../Tests/Endpoints.Tests/*.csproj ./Tests/Endpoints.Tests/
+COPY ../Application/*.csproj ./Application/
+COPY ../Core/*.csproj ./Core/
+COPY ../DataAccess/*.csproj ./DataAccess/
+COPY ../Tests/Application.Tests/*.csproj ./Tests/Application.Tests/
+COPY ../Tests/MinimalApi.Tests/*.csproj ./Tests/MinimalApi.Tests/
 RUN dotnet restore
 
 # copy everything else and build app
 COPY ../MinimalApi/. ./MinimalApi/
-COPY ../Tests/Services.Tests/. ./Tests/Services.Tests/
-COPY ../Tests/Endpoints.Tests/. ./Tests/Endpoints.Tests/
+COPY ../Application/. ./Application/
+COPY ../Core/. ./Core/
+COPY ../DataAccess/. ./DataAccess/
+COPY ../Tests/Application.Tests/. ./Tests/Application.Tests/
+COPY ../Tests/MinimalApi.Tests/. ./Tests/MinimalApi.Tests/
 WORKDIR /app/MinimalApi
 RUN dotnet publish -c release -o /app/out
 

@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using MinimalApi.Extensions;
+﻿using Core.Extensions;
+using FluentValidation;
 
 namespace MinimalApi.Filters;
 

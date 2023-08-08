@@ -1,5 +1,5 @@
-﻿using MinimalApi.Repositories;
-using MinimalApi.Repositories.Abstractions;
+﻿using Core.Interfaces.Repositories;
+using DataAccess.Repositories;
 
 namespace MinimalApi.Configurations;
 

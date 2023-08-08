@@ -1,5 +1,6 @@
-﻿using MinimalApi.Services;
-using MinimalApi.Services.Abstractions;
+﻿using Core.Interfaces.Services;
+using Core.Services;
+using MinimalApi.Services;
 
 namespace MinimalApi.Configurations;
 

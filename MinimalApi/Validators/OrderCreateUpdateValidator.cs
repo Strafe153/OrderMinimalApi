@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using MinimalApi.Dtos;
+﻿using Core.Dtos;
+using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace MinimalApi.Validators;

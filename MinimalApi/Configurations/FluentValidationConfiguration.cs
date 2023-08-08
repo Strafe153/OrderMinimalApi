@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using Core.Dtos;
+using FluentValidation;
 using FluentValidation.AspNetCore;
-using MinimalApi.Dtos;
 using MinimalApi.Validators;
 
 namespace MinimalApi.Configurations;

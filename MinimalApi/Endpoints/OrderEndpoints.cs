@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Core.Dtos;
+using Core.Interfaces.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MinimalApi.Dtos;
 using MinimalApi.Filters;
-using MinimalApi.Services.Abstractions;
 
 namespace MinimalApi.Endpoints;
 

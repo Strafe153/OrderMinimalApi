@@ -1,4 +1,4 @@
-﻿using MinimalApi.Shared;
+﻿using Core.Shared;
 
 namespace MinimalApi.Configurations;
 

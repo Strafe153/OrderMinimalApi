@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MinimalApi.Exceptions;
-using MinimalApi.Shared;
+﻿using Core.Exceptions;
+using Core.Shared;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
