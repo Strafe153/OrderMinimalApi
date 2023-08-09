@@ -3,7 +3,6 @@ using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
-using Core.Shared;
 using Mapster;
 
 namespace Core.Services;
@@ -11,52 +10,25 @@ namespace Core.Services;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _repository;
-    private readonly ICacheService _cacheService;
-    private readonly CacheOptions _cacheOptions;
 
-    public OrderService(
-        IOrderRepository repository,
-        ICacheService cacheService)
+    public OrderService(IOrderRepository repository)
     {
         _repository = repository;
-        _cacheService = cacheService;
-
-        _cacheOptions = new CacheOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2),
-            SlidingExpiration = TimeSpan.FromSeconds(10)
-        };
     }
 
     public async Task<IEnumerable<OrderReadDto>> GetAllAsync(CancellationToken token = default)
     {
-        var key = "orders";
-        var orders = _cacheService.Get<IEnumerable<Order>>(key);
-
-        if (orders is null)
-        {
-            orders = await _repository.GetAllAsync(token);
-            _cacheService.Set(key, orders, _cacheOptions);
-        }
-
+        var orders = await _repository.GetAllAsync(token);
         return orders.Adapt<IEnumerable<OrderReadDto>>();
     }
 
     public async Task<OrderReadDto> GetByIdAsync(string id, CancellationToken token = default)
     {
-        var key = $"orders:{id}";
-        var order = _cacheService.Get<Order>(key);
+        var order = await _repository.GetByIdAsync(id, token);
 
         if (order is null)
         {
-            order = await _repository.GetByIdAsync(id, token);
-
-            if (order is null)
-            {
-                throw new NullReferenceException($"Order with id '{id}' not found.");
-            }
-
-            _cacheService.Set(key, order, _cacheOptions);
+            throw new NullReferenceException($"Order with id '{id}' not found.");
         }
 
         return order.Adapt<OrderReadDto>();

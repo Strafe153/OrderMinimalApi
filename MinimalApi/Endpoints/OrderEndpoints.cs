@@ -14,9 +14,11 @@ public static class OrderEndpoints
             .MapGroup("api/v{version:apiVersion}/orders")
             .RequireRateLimiting("tokenBucket");
 
-        orderEndpointsGroup.MapGet(string.Empty, GetAllAsync);
+        orderEndpointsGroup.MapGet(string.Empty, GetAllAsync)
+            .CacheOutput();
 
-        orderEndpointsGroup.MapGet("{id}", GetAsync);
+        orderEndpointsGroup.MapGet("{id}", GetAsync)
+            .CacheOutput();
 
         orderEndpointsGroup.MapPost(string.Empty, CreateAsync)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();

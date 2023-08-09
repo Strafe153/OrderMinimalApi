@@ -5,7 +5,6 @@ using Core.Dtos;
 using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
-using Core.Interfaces.Services;
 using Core.Services;
 using MongoDB.Bson;
 
@@ -36,9 +35,8 @@ public class OrderServiceFixture
             .CustomInstantiator(f => new(f.Lorem.Sentence()));
 
         OrderRepository = fixture.Freeze<IOrderRepository>();
-        CacheService = fixture.Freeze<ICacheService>();
 
-        OrderService = new OrderService(OrderRepository, CacheService);
+        OrderService = new OrderService(OrderRepository);
 
         OrdersCount = Random.Shared.Next(2, 21);
         OperationFailedException = operationFailedExceptionFaker.Generate();
@@ -49,7 +47,6 @@ public class OrderServiceFixture
 
     public OrderService OrderService { get; }
     public IOrderRepository OrderRepository { get; }
-    public ICacheService CacheService { get; }
 
     public string Id { get; }
     public int OrdersCount { get; }

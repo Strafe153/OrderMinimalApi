@@ -11,7 +11,7 @@ builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
 builder.Services.AddCustomValidators();
 
-builder.Services.AddMemoryCache();
+builder.Services.ConfigureOutputCache();
 
 builder.Services.ConfigureMapster();
 builder.Services.ConfigureFluentValidation();
@@ -34,6 +34,8 @@ app.UseHttpsRedirection();
 app.UseHealthChecks();
 
 app.UseRateLimiter();
+
+app.UseOutputCache();
 
 // Add Order endpoints.
 app.UseOrderEndpoints();

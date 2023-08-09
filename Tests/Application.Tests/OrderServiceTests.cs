@@ -18,12 +18,9 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     }
 
     [Fact]
-    public async Task GetAllAsync_Should_ReturnIEnumerableOfOrderReadDtoFromRepository_WhenOrdersExist()
+    public async Task GetAllAsync_Should_ReturnIEnumerableOfOrderReadDto_WhenOrdersExist()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<IEnumerable<Order>>(A<string>._))
-            .Returns(null!);
-
         A.CallTo(() => _fixture.OrderRepository.GetAllAsync(A<CancellationToken>._))
             .Returns(Task.FromResult(_fixture.Orders));
 
@@ -35,42 +32,11 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     }
 
     [Fact]
-    public async Task GetAllAsync_Should_ReturnIEnumerableOfOrderReadDtoFromCache_WhenOrdersExist()
+    public async Task GetByIdAsync_Should_ReturnOrderReadDto_WhenOrderExists()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<IEnumerable<Order>>(A<string>._))
-            .Returns(_fixture.Orders);
-
-        // Act
-        var result = await _fixture.OrderService.GetAllAsync();
-
-        // Assert
-        result.Count().Should().Be(_fixture.OrdersCount);
-    }
-
-    [Fact]
-    public async Task GetByIdAsync_Should_ReturnOrderReadDtoFromRepository_WhenOrderExists()
-    {
-        // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(null!);
-
         A.CallTo(() => _fixture.OrderRepository.GetByIdAsync(A<string>._, A<CancellationToken>._))
             .Returns(Task.FromResult(_fixture.Order));
-
-        // Act
-        var result = await _fixture.OrderService.GetByIdAsync(_fixture.Id);
-
-        // Assert
-        result.Should().NotBeNull().And.BeOfType<OrderReadDto>();
-    }
-
-    [Fact]
-    public async Task GetByIdAsync_Should_ReturnOrderReadDtoFromCache_WhenOrderExists()
-    {
-        // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(_fixture.Order);
 
         // Act
         var result = await _fixture.OrderService.GetByIdAsync(_fixture.Id);
@@ -83,9 +49,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task GetByIdAsync_Should_ThrowNullReferenceException_WhenOrderDoesNotExist()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(null!);
-
         A.CallTo(() => _fixture.OrderRepository.GetByIdAsync(A<string>._, A<CancellationToken>._))
             .Returns(Task.FromResult((Order?)null));
 
@@ -110,9 +73,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task UpdateAsync_Should_ReturnTask_WhenOrderExists()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(_fixture.Order);
-
         A.CallTo(() => _fixture.OrderRepository.UpdateAsync(A<string>._, A<Order>._))
             .Returns(Task.CompletedTask);
 
@@ -128,9 +88,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task UpdateAsync_Should_ThrowNullReferenceException_WhenOrderDoesNotExist()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(null!);
-
         A.CallTo(() => _fixture.OrderRepository.GetByIdAsync(A<string>._, A<CancellationToken>._))
             .Returns(Task.FromResult((Order?)null));
 
@@ -145,9 +102,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task UpdateAsync_Should_ThrowOperationFailedException_WhenUpdateFails()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(_fixture.Order);
-
         A.CallTo(() => _fixture.OrderRepository.UpdateAsync(A<string>._, A<Order>._))
             .ThrowsAsync(_fixture.OperationFailedException);
 
@@ -162,8 +116,8 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task DeleteAsync_Should_ReturnTask_WhenOrderExists()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(_fixture.Order);
+        A.CallTo(() => _fixture.OrderRepository.GetByIdAsync(A<string>._, A<CancellationToken>._))
+            .Returns(Task.FromResult(_fixture.Order));
 
         // Act
         var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
@@ -177,9 +131,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task DeleteAsync_Should_ThrowNullReferenceException_WhenOrderDoesNotExist()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(null!);
-
         A.CallTo(() => _fixture.OrderRepository.GetByIdAsync(A<string>._, A<CancellationToken>._))
             .Returns(Task.FromResult((Order?)null));
 
@@ -194,9 +145,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
     public async Task DeleteAsync_Should_ThrowOperationFailedException_WhenDeleteFails()
     {
         // Arrange
-        A.CallTo(() => _fixture.CacheService.Get<Order>(A<string>._))
-            .Returns(_fixture.Order);
-
         A.CallTo(() => _fixture.OrderRepository.DeleteAsync(A<string>._))
             .ThrowsAsync(_fixture.OperationFailedException);
 
