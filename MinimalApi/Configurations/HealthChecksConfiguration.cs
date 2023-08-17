@@ -9,7 +9,8 @@ public static class HealthChecksConfiguration
     {
         services
             .AddHealthChecks()
-            .AddMongoDb(configuration.GetSection("OrderDatabase:ConnectionString").Value!);
+            .AddMongoDb(configuration.GetSection("OrderDatabase:ConnectionString").Value!)
+            .AddRedis(configuration.GetConnectionString("RedisConnection")!);
     }
 
     public static void UseHealthChecks(this WebApplication application)

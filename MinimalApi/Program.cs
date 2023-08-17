@@ -11,7 +11,7 @@ builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
 builder.Services.AddCustomValidators();
 
-builder.Services.ConfigureOutputCache();
+builder.Services.ConfigureOutputCache(builder.Configuration);
 
 builder.Services.ConfigureMapster();
 builder.Services.ConfigureFluentValidation();
