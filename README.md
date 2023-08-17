@@ -6,6 +6,7 @@
 
 ## Dependencies
 * `AspNetCore.HealthChecks.MongoDb` for MongoDB health check
+* `AspNetCore.HealthChecks.Redis` for Redis health checks
 * `AspNetCore.HealthChecks.UI.Client` for detailed health checks information
 * `AutoFixture` for test fixtures
 * `AutoFixture.AutoFakeItEasy` for FakeItEasy support with AutoFixture
@@ -18,6 +19,7 @@
 * `Microsoft.AspNetCore.Mvc.NewtonsoftJson` for JSON serialization
 * `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` for API versioning
 * `Microsoft.AspNetCore.OpenApi` for Open API support
+* `Microsoft.Extensions.Caching.StackExchangeRedis` for redis cache
 * `Microsoft.NET.Test.Sdk` for .NET SDK for testing
 * `MongoDB.Driver` for MongoDB
 * `Swashbuckle.AspNetCore` for Swagger support
