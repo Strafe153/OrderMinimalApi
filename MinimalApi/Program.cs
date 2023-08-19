@@ -1,5 +1,6 @@
 using MinimalApi.Configurations;
 using MinimalApi.Endpoints;
+using MinimalApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
-app.UseCustomMiddleware();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
