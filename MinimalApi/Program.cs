@@ -4,9 +4,12 @@ using MinimalApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.ConfigureLoggers();
+
 builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.ConfigureHealthChecks(builder.Configuration);
 builder.Services.ConfigureRateLimiting(builder.Configuration);
+builder.Services.ConfigureHttpClients(builder.Configuration);
 
 builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
