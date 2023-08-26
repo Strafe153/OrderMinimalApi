@@ -1,4 +1,5 @@
-﻿using AutoFixture;
+﻿using Amazon.Runtime.Internal.Util;
+using AutoFixture;
 using AutoFixture.AutoFakeItEasy;
 using Bogus;
 using Core.Dtos;
@@ -6,6 +7,7 @@ using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Services;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 
 namespace Application.Tests.Fixtures;
@@ -35,8 +37,9 @@ public class OrderServiceFixture
             .CustomInstantiator(f => new(f.Lorem.Sentence()));
 
         OrderRepository = fixture.Freeze<IOrderRepository>();
+        Logger = fixture.Freeze<ILogger<OrderService>>();
 
-        OrderService = new OrderService(OrderRepository);
+        OrderService = new OrderService(OrderRepository, Logger);
 
         OrdersCount = Random.Shared.Next(2, 21);
         OperationFailedException = operationFailedExceptionFaker.Generate();
@@ -47,6 +50,7 @@ public class OrderServiceFixture
 
     public OrderService OrderService { get; }
     public IOrderRepository OrderRepository { get; }
+    public ILogger<OrderService> Logger { get; }
 
     public string Id { get; }
     public int OrdersCount { get; }
