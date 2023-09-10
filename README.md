@@ -20,9 +20,9 @@
 * `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` for API versioning
 * `Microsoft.AspNetCore.OpenApi` for Open API support
 * `Microsoft.Extensions.Caching.StackExchangeRedis` for redis cache
-* `Microsoft.Extensions.Http.Polly` for transient fault handling
 * `Microsoft.NET.Test.Sdk` for .NET SDK for testing
 * `MongoDB.Driver` for MongoDB
+* `Polly.Extensions.Http` for transient fault handling
 * `Serilog.AspNetCore` for Serilog support for ASP.NET Core
 * `Serilog.Exceptions` for detailed Serilog exceptions
 * `Serilog.Sinks.Console` for Serilog console sink
