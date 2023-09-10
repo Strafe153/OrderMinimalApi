@@ -1,4 +1,6 @@
-﻿namespace MinimalApi.HttpClients;
+﻿using MinimalApi.Policies;
+
+namespace MinimalApi.HttpClients;
 
 public class SeqClient
 {
@@ -10,5 +12,6 @@ public class SeqClient
     }
 
     public async Task CheckSeqHealth() =>
-        await _httpClient.GetAsync(_httpClient.BaseAddress);
+        await PolicyProvider.WaitRetryPolicy.ExecuteAsync(
+            async () => await _httpClient.GetAsync(_httpClient.BaseAddress));
 }
