@@ -14,33 +14,33 @@ public static class OrderEndpoints
             .MapGroup("api/v{version:apiVersion}/orders")
             .RequireRateLimiting("tokenBucket");
 
-        orderEndpointsGroup.MapGet(string.Empty, GetAllAsync)
+        orderEndpointsGroup.MapGet(string.Empty, GetAll)
             .CacheOutput();
 
-        orderEndpointsGroup.MapGet("{id}", GetAsync)
+        orderEndpointsGroup.MapGet("{id}", Get)
             .CacheOutput();
 
-        orderEndpointsGroup.MapPost(string.Empty, CreateAsync)
+        orderEndpointsGroup.MapPost(string.Empty, Create)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
-        orderEndpointsGroup.MapPut("{id}", UpdateAsync)
+        orderEndpointsGroup.MapPut("{id}", Update)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
-        orderEndpointsGroup.MapDelete("{id}", DeleteAsync);
+        orderEndpointsGroup.MapDelete("{id}", Delete);
     }
 
-    public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAllAsync(
+    public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAll(
         [FromServices] IOrderService service,
         CancellationToken token) =>
             TypedResults.Ok(await service.GetAllAsync(token));
 
-    public static async Task<Ok<OrderReadDto>> GetAsync(
+    public static async Task<Ok<OrderReadDto>> Get(
         [FromServices] IOrderService service,
         [FromRoute] string id,
         CancellationToken token) =>
             TypedResults.Ok(await service.GetByIdAsync(id, token));
 
-    public static async Task<Created<OrderReadDto>> CreateAsync(
+    public static async Task<Created<OrderReadDto>> Create(
         [FromServices] IOrderService service,
         [FromBody] OrderCreateUpdateDto createDto)
     {
@@ -48,7 +48,7 @@ public static class OrderEndpoints
         return TypedResults.Created($"api/orders/{readDto.Id}", readDto);
     }
 
-    public static async Task<NoContent> UpdateAsync(
+    public static async Task<NoContent> Update(
         [FromServices] IOrderService service,
         [FromRoute] string id, 
         [FromBody] OrderCreateUpdateDto updateDto)
@@ -57,7 +57,7 @@ public static class OrderEndpoints
         return TypedResults.NoContent();
     }
 
-    public static async Task<NoContent> DeleteAsync(
+    public static async Task<NoContent> Delete(
         [FromServices] IOrderService service,
         [FromRoute] string id)
     {

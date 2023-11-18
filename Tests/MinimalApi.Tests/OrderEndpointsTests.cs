@@ -18,14 +18,14 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
     }
 
     [Fact]
-    public async Task GetAllAsync_Should_ReturnOkOfOrderReadDto_WhenOrdersExist()
+    public async Task GetAll_Should_ReturnOkOfOrderReadDto_WhenOrdersExist()
     {
         // Arrange
         A.CallTo(() => _fixture.OrderService.GetAllAsync(A<CancellationToken>._))
             .Returns(_fixture.OrderReadDtos);
 
         // Act
-        var result = await OrderEndpoints.GetAllAsync(_fixture.OrderService, _fixture.CancellationToken);
+        var result = await OrderEndpoints.GetAll(_fixture.OrderService, _fixture.CancellationToken);
         var orders = result.Value.As<IEnumerable<OrderReadDto>>();
 
         // Assert
@@ -34,14 +34,14 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
     }
 
     [Fact]
-    public async Task GetAsync_Should_ReturnOkOfOrderReadDto_WhenOrderExists()
+    public async Task Get_Should_ReturnOkOfOrderReadDto_WhenOrderExists()
     {
         // Arrange
         A.CallTo(() => _fixture.OrderService.GetByIdAsync(A<string>._, A<CancellationToken>._))
             .Returns(_fixture.OrderReadDto);
 
         // Act
-        var result = await OrderEndpoints.GetAsync(_fixture.OrderService, _fixture.Id, _fixture.CancellationToken);
+        var result = await OrderEndpoints.Get(_fixture.OrderService, _fixture.Id, _fixture.CancellationToken);
         var order = result.Value;
 
         // Assert
@@ -50,14 +50,14 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
     }
 
     [Fact]
-    public async Task CreateAsync_Should_ReturnCreatedOfOrderReadDto_WhenDataIsValid()
+    public async Task Create_Should_ReturnCreatedOfOrderReadDto_WhenDataIsValid()
     {
         // Arrange
         A.CallTo(() => _fixture.OrderService.CreateAsync(A<OrderCreateUpdateDto>._))
             .Returns(_fixture.OrderReadDto);
 
         // Act
-        var result = await OrderEndpoints.CreateAsync(_fixture.OrderService, _fixture.OrderCreateUpdateDto);
+        var result = await OrderEndpoints.Create(_fixture.OrderService, _fixture.OrderCreateUpdateDto);
         var order = result.Value;
 
         // Assert
@@ -66,20 +66,20 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
     }
 
     [Fact]
-    public async Task UpdateAsync_Should_ReturnNoContent_WhenDataIsValid()
+    public async Task Update_Should_ReturnNoContent_WhenDataIsValid()
     {
         // Act
-        var result = await OrderEndpoints.UpdateAsync(_fixture.OrderService, _fixture.Id, _fixture.OrderCreateUpdateDto);
+        var result = await OrderEndpoints.Update(_fixture.OrderService, _fixture.Id, _fixture.OrderCreateUpdateDto);
 
         // Assert
         result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
     }
 
     [Fact]
-    public async Task DeleteAsync_Should_ReturnNoContent_WhenDataIsValid()
+    public async Task Delete_Should_ReturnNoContent_WhenDataIsValid()
     {
         // Act
-        var result = await OrderEndpoints.DeleteAsync(_fixture.OrderService, _fixture.Id);
+        var result = await OrderEndpoints.Delete(_fixture.OrderService, _fixture.Id);
 
         // Assert
         result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
