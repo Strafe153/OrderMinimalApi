@@ -1,39 +1,21 @@
 ﻿using Core.Exceptions;
 using Core.Shared;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
-namespace MinimalApi.Middleware;
+namespace MinimalApi;
 
-public class ExceptionHandlingMiddleware
+public class ExceptionHandler : IExceptionHandler
 {
-    private readonly RequestDelegate _next;
-
-    public ExceptionHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext context)
-    {
-        try
-        {
-            await _next(context);
-        }
-        catch (Exception ex)
-        {
-            await HandleExceptionAsync(context, ex);
-        }
-    }
-
-    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var statusCode = GetHttpStatusCode(exception);
         var statusCodeAsInt = (int)statusCode;
 
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = statusCodeAsInt;
+        httpContext.Response.ContentType = "application/json";
+        httpContext.Response.StatusCode = statusCodeAsInt;
 
         var problemDetails = new ProblemDetails
         {
@@ -41,12 +23,13 @@ public class ExceptionHandlingMiddleware
             Title = exception.Message,
             Status = statusCodeAsInt,
             Detail = exception.Message,
-            Instance = context.Request.Path
+            Instance = httpContext.Request.Path
         };
 
         var json = JsonSerializer.Serialize(problemDetails);
+        await httpContext.Response.WriteAsync(json);
 
-        return context.Response.WriteAsync(json);
+        return true;
     }
 
     private static HttpStatusCode GetHttpStatusCode(Exception exception) =>

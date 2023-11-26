@@ -1,6 +1,6 @@
+using MinimalApi;
 using MinimalApi.Configurations;
 using MinimalApi.Endpoints;
-using MinimalApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +23,12 @@ builder.Services.ConfigureFluentValidation();
 builder.Services.ConfigureApiVersioning();
 builder.Services.ConfigureSwagger();
 
+builder.Services.AddExceptionHandler<ExceptionHandler>();
+
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+// As of now that's a confirmed, though yet unfixed bug acknowledged by Microsoft
+app.UseExceptionHandler(_ => { });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
