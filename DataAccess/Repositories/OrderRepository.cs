@@ -10,7 +10,7 @@ public class OrderRepository : IOrderRepository
 {
     private readonly IMongoCollection<Order> _orders;
 
-    public OrderRepository(IOptions<OrderDatabaseSettings> orderDatabaseSettings)
+    public OrderRepository(IOptions<OrderDatabaseOptions> orderDatabaseSettings)
     {
         var mongoClient = new MongoClient(orderDatabaseSettings.Value.ConnectionString);
         var mongoDatabase = mongoClient.GetDatabase(orderDatabaseSettings.Value.DatabaseName);

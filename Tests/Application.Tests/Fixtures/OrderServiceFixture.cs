@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal.Util;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.AutoFakeItEasy;
 using Bogus;
 using Core.Dtos;
@@ -28,10 +27,11 @@ public class OrderServiceFixture
             .RuleFor(o => o.Price, f => f.Random.Decimal());
 
         var orderDtoFaker = new Faker<OrderCreateUpdateDto>()
-            .RuleFor(o => o.CustomerName, f => f.Name.FullName())
-            .RuleFor(o => o.Address, f => f.Address.FullAddress())
-            .RuleFor(o => o.Product, f => f.Commerce.Product())
-            .RuleFor(o => o.Price, f => f.Random.Decimal());
+            .CustomInstantiator(f => new(
+                f.Name.FullName(),
+                f.Address.FullAddress(),
+                f.Commerce.Product(),
+                f.Random.Decimal()));
 
         var operationFailedExceptionFaker = new Faker<OperationFailedException>()
             .CustomInstantiator(f => new(f.Lorem.Sentence()));

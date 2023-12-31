@@ -1,4 +1,6 @@
-﻿namespace MinimalApi.Configurations;
+﻿using Core.Shared;
+
+namespace MinimalApi.Configurations;
 
 public static class OutputCacheConfiguration
 {
@@ -14,8 +16,8 @@ public static class OutputCacheConfiguration
             })
             .AddStackExchangeRedisCache(options =>
             {
-                options.InstanceName = "OrderMinimalApi";
-                options.Configuration = configuration.GetConnectionString("RedisConnection");
+                options.InstanceName = typeof(Program).Assembly.GetName().Name;
+                options.Configuration = configuration.GetConnectionString(ConnectionStringConstants.RedisConnection);
             });
     }
 }

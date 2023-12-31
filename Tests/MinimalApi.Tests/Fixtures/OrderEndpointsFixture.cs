@@ -17,17 +17,19 @@ public class OrderEndpointsFixture
         OrderReadDtosCount = Random.Shared.Next(1, 21);
 
         var orderReadDtoFaker = new Faker<OrderReadDto>()
-            .RuleFor(o => o.Id, Id)
-            .RuleFor(o => o.CustomerName, f => f.Name.FullName())
-            .RuleFor(o => o.Address, f => f.Address.FullAddress())
-            .RuleFor(o => o.Product, f => f.Commerce.Product())
-            .RuleFor(o => o.Price, f => f.Random.Decimal());
+            .CustomInstantiator(f => new(
+                Id,
+                f.Name.FullName(),
+                f.Address.FullAddress(),
+                f.Commerce.Product(),
+                f.Random.Decimal()));
 
         var orderCreateUpdateDtoFaker = new Faker<OrderCreateUpdateDto>()
-            .RuleFor(o => o.CustomerName, f => f.Name.FullName())
-            .RuleFor(o => o.Address, f => f.Address.FullAddress())
-            .RuleFor(o => o.Product, f => f.Commerce.Product())
-            .RuleFor(o => o.Price, f => f.Random.Decimal());
+            .CustomInstantiator(f => new(
+                f.Name.FullName(),
+                f.Address.FullAddress(),
+                f.Commerce.Product(),
+                f.Random.Decimal()));
 
         OrderService = fixture.Freeze<IOrderService>();
 

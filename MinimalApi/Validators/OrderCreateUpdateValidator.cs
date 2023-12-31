@@ -1,4 +1,5 @@
 ﻿using Core.Dtos;
+using Core.Shared;
 using FluentValidation;
 using System.Text.RegularExpressions;
 
@@ -43,6 +44,6 @@ public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateUpdateDto
 
     private bool BeOfFormat(string name) =>
         name is not null 
-            ? new Regex("[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]+").Match(name).Length > 0
+            ? new Regex(ValidatorConstants.FullNamePattern).Match(name).Length > 0
             : false;
 }

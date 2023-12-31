@@ -1,5 +1,6 @@
 ﻿using Core.Dtos;
 using Core.Interfaces.Services;
+using Core.Shared;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Filters;
@@ -12,27 +13,29 @@ public static class OrderEndpoints
     {
         var orderEndpointsGroup = app
             .MapGroup("api/v{version:apiVersion}/orders")
-            .RequireRateLimiting("tokenBucket");
+            .RequireRateLimiting(RateLimitingConstants.TokenBucket);
 
-        orderEndpointsGroup.MapGet(string.Empty, GetAll)
+        orderEndpointsGroup
+            .MapGet(string.Empty, GetAll)
             .CacheOutput();
 
-        orderEndpointsGroup.MapGet("{id}", Get)
+        orderEndpointsGroup
+            .MapGet("{id}", Get)
             .CacheOutput();
 
-        orderEndpointsGroup.MapPost(string.Empty, Create)
+        orderEndpointsGroup
+            .MapPost(string.Empty, Create)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
-        orderEndpointsGroup.MapPut("{id}", Update)
+        orderEndpointsGroup
+            .MapPut("{id}", Update)
             .AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
 
         orderEndpointsGroup.MapDelete("{id}", Delete);
     }
 
-    public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAll(
-        [FromServices] IOrderService service,
-        CancellationToken token) =>
-            TypedResults.Ok(await service.GetAllAsync(token));
+    public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAll([FromServices] IOrderService service, CancellationToken token) =>
+        TypedResults.Ok(await service.GetAllAsync(token));
 
     public static async Task<Ok<OrderReadDto>> Get(
         [FromServices] IOrderService service,
@@ -57,9 +60,7 @@ public static class OrderEndpoints
         return TypedResults.NoContent();
     }
 
-    public static async Task<NoContent> Delete(
-        [FromServices] IOrderService service,
-        [FromRoute] string id)
+    public static async Task<NoContent> Delete([FromServices] IOrderService service, [FromRoute] string id)
     {
         await service.DeleteAsync(id);
         return TypedResults.NoContent();

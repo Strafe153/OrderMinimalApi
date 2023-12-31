@@ -1,10 +1,8 @@
 ﻿namespace Core.Dtos;
 
-public record OrderReadDto
-{
-    public string Id { get; init; } = default!;
-    public string CustomerName { get; init; } = default!;
-    public string Address { get; init; } = default!;
-    public string Product { get; init; } = default!;
-    public decimal Price { get; init; }
-}
+public record OrderReadDto(
+    string Id,
+    string CustomerName,
+    string Address,
+    string Product,
+    decimal Price);

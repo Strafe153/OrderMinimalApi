@@ -1,4 +1,5 @@
-﻿using HealthChecks.UI.Client;
+﻿using Core.Shared;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MinimalApi.HealthChecks;
 
@@ -11,7 +12,7 @@ public static class HealthChecksConfiguration
         services
             .AddHealthChecks()
             .AddMongoDb(configuration.GetSection("OrderDatabase:ConnectionString").Value!)
-            .AddRedis(configuration.GetConnectionString("RedisConnection")!)
+            .AddRedis(configuration.GetConnectionString(ConnectionStringConstants.RedisConnection)!)
             .AddCheck<SeqHealthCheck>("Seq");
     }
 

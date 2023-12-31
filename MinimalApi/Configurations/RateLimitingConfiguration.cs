@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.RateLimiting;
+﻿using Core.Shared;
+using Microsoft.AspNetCore.RateLimiting;
 using MinimalApi.Configurations.ConfigurationModels;
-using System.Threading.RateLimiting;
 
 namespace MinimalApi.Configurations;
 
@@ -8,19 +8,20 @@ public static class RateLimitingConfiguration
 {
     public static void ConfigureRateLimiting(this IServiceCollection services, IConfiguration configuration)
     {
-        var rateLimitOptions = new RateLimitOptions();
-        configuration.GetSection(RateLimitOptions.RateLimitOptionsSectionName).Bind(rateLimitOptions);
+        var rateLimitOptions = configuration
+            .GetSection(RateLimitOptions.RateLimitOptionsSectionName)
+            .Get<RateLimitOptions>()!;
 
         services.AddRateLimiter(options =>
         {
-            options.AddTokenBucketLimiter("tokenBucket", tokenOptions =>
+            options.AddTokenBucketLimiter(RateLimitingConstants.TokenBucket, tokenOptions =>
             {
                 tokenOptions.TokenLimit = rateLimitOptions.TokenLimit;
                 tokenOptions.TokensPerPeriod = rateLimitOptions.TokensPerPeriod;
                 tokenOptions.ReplenishmentPeriod = TimeSpan.FromSeconds(rateLimitOptions.ReplenishmentPeriod);
                 tokenOptions.AutoReplenishment = rateLimitOptions.AutoReplenishment;
                 tokenOptions.QueueLimit = rateLimitOptions.QueueLimit;
-                tokenOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                tokenOptions.QueueProcessingOrder = rateLimitOptions.QueueProcessingOrder;
             });
 
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
