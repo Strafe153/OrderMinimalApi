@@ -1,4 +1,4 @@
-﻿namespace Core.Shared;
+﻿namespace Core.Constants;
 
 public static class ConnectionStringConstants
 {

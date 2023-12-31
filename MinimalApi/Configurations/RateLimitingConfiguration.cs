@@ -1,4 +1,4 @@
-﻿using Core.Shared;
+﻿using Core.Constants;
 using Microsoft.AspNetCore.RateLimiting;
 using MinimalApi.Configurations.ConfigurationModels;
 
