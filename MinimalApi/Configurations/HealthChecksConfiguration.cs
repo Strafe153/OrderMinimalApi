@@ -1,4 +1,4 @@
-﻿using Core.Constants;
+﻿using Core.Shared.Constants;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MinimalApi.HealthChecks;

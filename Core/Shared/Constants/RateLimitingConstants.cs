@@ -1,4 +1,4 @@
-﻿namespace Core.Constants;
+﻿namespace Core.Shared.Constants;
 
 public static class RateLimitingConstants
 {

@@ -1,4 +1,4 @@
-﻿using Core.Constants;
+﻿using Core.Shared.Constants;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;

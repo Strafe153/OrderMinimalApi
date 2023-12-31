@@ -1,4 +1,4 @@
-﻿using Core.Constants;
+﻿using Core.Shared.Constants;
 
 namespace MinimalApi.Configurations;
 
