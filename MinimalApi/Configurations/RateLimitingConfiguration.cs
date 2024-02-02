@@ -6,8 +6,7 @@ namespace MinimalApi.Configurations;
 
 public static class RateLimitingConfiguration
 {
-    public static void ConfigureRateLimiting(this IServiceCollection services, IConfiguration configuration)
-    {
+    public static void ConfigureRateLimiting(this IServiceCollection services, IConfiguration configuration) =>
         services.AddRateLimiter(options =>
         {
             options.AddTokenBucketLimiter(RateLimitingConstants.TokenBucket, tokenOptions =>
@@ -32,5 +31,4 @@ public static class RateLimitingConfiguration
                 return new ValueTask();
             };
         });
-    }
 }
