@@ -10,11 +10,20 @@ public static class RateLimitingConfiguration
     {
         services.AddRateLimiter(options =>
         {
-            var rateLimitOptions = configuration
-                .GetSection(RateLimitingConstants.SectionName)
-                .Get<TokenBucketRateLimiterOptions>()!;
+            options.AddTokenBucketLimiter(RateLimitingConstants.TokenBucket, tokenOptions =>
+            {
+                var rateLimitOptions = configuration
+                    .GetSection(RateLimitingConstants.SectionName)
+                    .Get<TokenBucketRateLimiterOptions>()!;
 
-            options.AddTokenBucketLimiter(RateLimitingConstants.TokenBucket, tokenOptions => tokenOptions = rateLimitOptions);
+                tokenOptions.TokenLimit = rateLimitOptions.TokenLimit;
+                tokenOptions.TokensPerPeriod = rateLimitOptions.TokensPerPeriod;
+                tokenOptions.ReplenishmentPeriod = rateLimitOptions.ReplenishmentPeriod;
+                tokenOptions.AutoReplenishment = rateLimitOptions.AutoReplenishment;
+                tokenOptions.QueueLimit = rateLimitOptions.QueueLimit;
+                tokenOptions.QueueProcessingOrder = rateLimitOptions.QueueProcessingOrder;
+            });
+
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
             options.OnRejected = (context, _) =>

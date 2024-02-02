@@ -24,12 +24,9 @@ public class OrderRepository : IOrderRepository
     public async Task<Order?> GetByIdAsync(string id, CancellationToken token = default) =>
         await _orders.Find(o => o.Id == id).FirstOrDefaultAsync(token);
 
-    public async Task CreateAsync(Order order) =>
-        await _orders.InsertOneAsync(order);
+    public Task CreateAsync(Order order) => _orders.InsertOneAsync(order);
 
-    public async Task UpdateAsync(string id, Order newOrder) =>
-        await _orders.ReplaceOneAsync(o => o.Id == id, newOrder);
+    public Task UpdateAsync(string id, Order newOrder) => _orders.ReplaceOneAsync(o => o.Id == id, newOrder);
 
-    public async Task DeleteAsync(string id) =>
-        await _orders.DeleteOneAsync(o => o.Id == id);
+    public Task DeleteAsync(string id) => _orders.DeleteOneAsync(o => o.Id == id);
 }
