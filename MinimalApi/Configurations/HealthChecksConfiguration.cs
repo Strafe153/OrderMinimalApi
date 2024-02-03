@@ -1,4 +1,5 @@
-﻿using Core.Shared.Constants;
+﻿using Core.Shared;
+using Core.Shared.Constants;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MinimalApi.HealthChecks;
@@ -9,18 +10,18 @@ public static class HealthChecksConfiguration
 {
     public static void ConfigureHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
+        var databaseOptions = configuration.GetSection(OrderDatabaseOptions.SectionName).Get<OrderDatabaseOptions>()!;
+
         services
             .AddHealthChecks()
-            .AddMongoDb(configuration.GetSection("OrderDatabase:ConnectionString").Value!)
+            .AddMongoDb(databaseOptions.ConnectionString)
             .AddRedis(configuration.GetConnectionString(ConnectionStringConstants.RedisConnection)!)
             .AddCheck<SeqHealthCheck>("Seq");
     }
 
-    public static void UseHealthChecks(this WebApplication application)
-    {
+    public static void UseHealthChecks(this WebApplication application) =>
         application.MapHealthChecks("/_health", new HealthCheckOptions
         {
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
-    }
 }

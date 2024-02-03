@@ -5,8 +5,7 @@ namespace MinimalApi.Configurations;
 
 public static class ApiVersioningConfiguration
 {
-    public static void ConfigureApiVersioning(this IServiceCollection services)
-    {
+    public static void ConfigureApiVersioning(this IServiceCollection services) =>
         services
             .AddApiVersioning(options =>
             {
@@ -20,5 +19,4 @@ public static class ApiVersioningConfiguration
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
             });
-    }
 }

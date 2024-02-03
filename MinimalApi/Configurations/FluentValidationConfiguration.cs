@@ -7,15 +7,11 @@ namespace MinimalApi.Configurations;
 
 public static class FluentValidationConfiguration
 {
-    public static void ConfigureFluentValidation(this IServiceCollection services)
-    {
+    public static void ConfigureFluentValidation(this IServiceCollection services) =>
         services
             .AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
-    }
 
-    public static void AddCustomValidators(this IServiceCollection services)
-    {
+    public static void AddCustomValidators(this IServiceCollection services) =>
         services.AddScoped<IValidator<OrderCreateUpdateDto>, OrderCreateUpdateValidator>();
-    }
 }
