@@ -5,6 +5,7 @@
 * CRUD operations with the Order entity
 
 ## Dependencies
+* `Asp.Versioning.Mvc.ApiExplorer` for API versioning
 * `AspNetCore.HealthChecks.MongoDb` for MongoDB health check
 * `AspNetCore.HealthChecks.Redis` for Redis health checks
 * `AspNetCore.HealthChecks.UI.Client` for detailed health checks information
@@ -17,7 +18,6 @@
 * `FluentValidation.AspNetCore` for ASP.NET Core integration with FluentValidation
 * `Mapster` for DTO mapping
 * `Microsoft.AspNetCore.Mvc.NewtonsoftJson` for JSON serialization
-* `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` for API versioning
 * `Microsoft.AspNetCore.OpenApi` for Open API support
 * `Microsoft.Extensions.Caching.StackExchangeRedis` for redis cache
 * `Microsoft.NET.Test.Sdk` for .NET SDK for testing
