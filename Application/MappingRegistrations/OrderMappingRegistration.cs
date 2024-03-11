@@ -1,14 +1,14 @@
-﻿using Core.Dtos;
-using Core.Entities;
+﻿using Domain.Dtos;
+using Domain.Entities;
 using Mapster;
 
 namespace Application.MappingRegistrations;
 
 public class OrderMappingRegistration : IRegister
 {
-    public void Register(TypeAdapterConfig config)
-    {
-        config.NewConfig<Order, OrderReadDto>();
-        config.NewConfig<OrderCreateUpdateDto, Order>();
-    }
+	public void Register(TypeAdapterConfig config)
+	{
+		config.NewConfig<Order, OrderReadDto>();
+		config.NewConfig<OrderCreateUpdateDto, Order>();
+	}
 }
