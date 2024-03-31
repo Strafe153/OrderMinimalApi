@@ -1,5 +1,5 @@
-﻿using Domain.Dtos;
-using Domain.Interfaces.Services;
+﻿using Application.Dtos;
+using Application.Services.Interfaces;
 using Domain.Shared.Constants;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

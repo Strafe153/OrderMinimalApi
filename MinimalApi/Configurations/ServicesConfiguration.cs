@@ -1,5 +1,5 @@
-﻿using Application.Services;
-using Domain.Interfaces.Services;
+﻿using Application.Services.Implementations;
+using Application.Services.Interfaces;
 
 namespace MinimalApi.Configurations;
 

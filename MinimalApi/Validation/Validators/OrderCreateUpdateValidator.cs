@@ -1,4 +1,4 @@
-﻿using Domain.Dtos;
+﻿using Application.Dtos;
 using Domain.Shared.Constants;
 using FluentValidation;
 using System.Text.RegularExpressions;

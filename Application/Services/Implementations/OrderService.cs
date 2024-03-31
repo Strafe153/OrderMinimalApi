@@ -1,12 +1,12 @@
-﻿using Domain.Dtos;
+﻿using Application.Dtos;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces.Repositories;
-using Domain.Interfaces.Services;
 using Mapster;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Services;
+namespace Application.Services.Implementations;
 
 public class OrderService : IOrderService
 {

@@ -1,4 +1,4 @@
-﻿using Domain.Dtos;
+﻿using Application.Dtos;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

@@ -1,6 +1,6 @@
-﻿using Domain.Dtos;
+﻿using Application.Dtos;
 
-namespace Domain.Interfaces.Services;
+namespace Application.Services.Interfaces;
 
 public interface IOrderService
 {

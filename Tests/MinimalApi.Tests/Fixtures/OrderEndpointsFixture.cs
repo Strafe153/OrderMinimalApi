@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoFakeItEasy;
 using Bogus;
-using Domain.Dtos;
-using Domain.Interfaces.Services;
+using Application.Dtos;
+using Application.Services.Interfaces;
 using MongoDB.Bson;
 
 namespace MinimalApi.Tests.Fixtures;

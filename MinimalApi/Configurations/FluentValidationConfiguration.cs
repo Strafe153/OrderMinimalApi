@@ -1,4 +1,4 @@
-﻿using Domain.Dtos;
+﻿using Application.Dtos;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MinimalApi.Validation.Validators;

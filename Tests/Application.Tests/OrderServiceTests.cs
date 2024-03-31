@@ -1,5 +1,5 @@
-﻿using Application.Tests.Fixtures;
-using Domain.Dtos;
+﻿using Application.Dtos;
+using Application.Tests.Fixtures;
 using Domain.Entities;
 using Domain.Exceptions;
 using FakeItEasy;
