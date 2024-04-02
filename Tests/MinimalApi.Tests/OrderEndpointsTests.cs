@@ -1,9 +1,9 @@
 ﻿using Application.Dtos;
 using FakeItEasy;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using MinimalApi.Endpoints;
 using MinimalApi.Tests.Fixtures;
+using Shouldly;
 using Xunit;
 
 namespace Endpoints.Tests;
@@ -26,11 +26,12 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 
 		// Act
 		var result = await OrderEndpoints.GetAll(_fixture.OrderService, _fixture.CancellationToken);
-		var orders = result.Value.As<IEnumerable<OrderReadDto>>();
+		var orders = result.Value;
 
 		// Assert
-		result.StatusCode.Should().Be(StatusCodes.Status200OK);
-		orders.Count().Should().Be(_fixture.OrderReadDtosCount);
+		result.StatusCode.ShouldBe(StatusCodes.Status200OK);
+		orders.ShouldNotBeNull();
+		orders.Count().ShouldBe(_fixture.OrderReadDtosCount);
 	}
 
 	[Fact]
@@ -45,8 +46,8 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 		var order = result.Value;
 
 		// Assert
-		result.StatusCode.Should().Be(StatusCodes.Status200OK);
-		order.Should().NotBeNull();
+		result.StatusCode.ShouldBe(StatusCodes.Status200OK);
+		order.ShouldNotBeNull();
 	}
 
 	[Fact]
@@ -61,8 +62,8 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 		var order = result.Value;
 
 		// Assert
-		result.StatusCode.Should().Be(StatusCodes.Status201Created);
-		order.Should().NotBeNull();
+		result.StatusCode.ShouldBe(StatusCodes.Status201Created);
+		order.ShouldNotBeNull();
 	}
 
 	[Fact]
@@ -72,7 +73,7 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 		var result = await OrderEndpoints.Update(_fixture.OrderService, _fixture.Id, _fixture.OrderCreateUpdateDto);
 
 		// Assert
-		result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+		result.StatusCode.ShouldBe(StatusCodes.Status204NoContent);
 	}
 
 	[Fact]
@@ -82,6 +83,6 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 		var result = await OrderEndpoints.Delete(_fixture.OrderService, _fixture.Id);
 
 		// Assert
-		result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+		result.StatusCode.ShouldBe(StatusCodes.Status204NoContent);
 	}
 }

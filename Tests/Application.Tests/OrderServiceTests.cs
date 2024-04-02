@@ -3,7 +3,7 @@ using Application.Tests.Fixtures;
 using Domain.Entities;
 using Domain.Exceptions;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace Application.Tests;
@@ -28,7 +28,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = await _fixture.OrderService.GetAllAsync();
 
 		// Assert
-		result.Count().Should().Be(_fixture.OrdersCount);
+		result.Count().ShouldBe(_fixture.OrdersCount);
 	}
 
 	[Fact]
@@ -42,7 +42,8 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = await _fixture.OrderService.GetByIdAsync(_fixture.Id);
 
 		// Assert
-		result.Should().NotBeNull().And.BeOfType<OrderReadDto>();
+		result.ShouldNotBeNull();
+		result.ShouldBeOfType<OrderReadDto>();
 	}
 
 	[Fact]
@@ -56,7 +57,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.GetByIdAsync(_fixture.Id);
 
 		// Assert
-		await result.Should().ThrowAsync<NullReferenceException>();
+		await result.ShouldThrowAsync<NullReferenceException>();
 	}
 
 	[Fact]
@@ -66,7 +67,8 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = await _fixture.OrderService.CreateAsync(_fixture.OrderDto);
 
 		// Assert
-		result.Should().NotBeNull().And.BeOfType<OrderReadDto>();
+		result.ShouldNotBeNull();
+		result.ShouldBeOfType<OrderReadDto>();
 	}
 
 	[Fact]
@@ -80,8 +82,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.UpdateAsync(_fixture.Id, _fixture.OrderDto);
 
 		// Assert
-		await result.Should().NotThrowAsync<NullReferenceException>();
-		await result.Should().NotThrowAsync<OperationFailedException>();
+		await result.ShouldNotThrowAsync();
 	}
 
 	[Fact]
@@ -95,7 +96,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.UpdateAsync(_fixture.Id, _fixture.OrderDto);
 
 		// Assert
-		await result.Should().ThrowAsync<NullReferenceException>();
+		await result.ShouldThrowAsync<NullReferenceException>();
 	}
 
 	[Fact]
@@ -109,7 +110,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.UpdateAsync(_fixture.Id, _fixture.OrderDto);
 
 		// Assert
-		await result.Should().ThrowAsync<OperationFailedException>();
+		await result.ShouldThrowAsync<OperationFailedException>();
 	}
 
 	[Fact]
@@ -123,8 +124,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
 
 		// Assert
-		await result.Should().NotThrowAsync<NullReferenceException>();
-		await result.Should().NotThrowAsync<OperationFailedException>();
+		await result.ShouldNotThrowAsync();
 	}
 
 	[Fact]
@@ -138,7 +138,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
 
 		// Assert
-		await result.Should().ThrowAsync<NullReferenceException>();
+		await result.ShouldThrowAsync<NullReferenceException>();
 	}
 
 	[Fact]
@@ -152,6 +152,6 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 		var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
 
 		// Assert
-		await result.Should().ThrowAsync<OperationFailedException>();
+		await result.ShouldThrowAsync<OperationFailedException>();
 	}
 }
