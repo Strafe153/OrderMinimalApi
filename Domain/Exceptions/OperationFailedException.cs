@@ -1,6 +1,6 @@
 ﻿namespace Domain.Exceptions;
 
-public class OperationFailedException : ApplicationException
+public class OperationFailedException : Exception
 {
 	public OperationFailedException()
 	{
