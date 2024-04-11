@@ -4,14 +4,14 @@ namespace MinimalApi.HttpClients;
 
 public class SeqClient
 {
-    private readonly HttpClient _httpClient;
+	private readonly HttpClient _httpClient;
 
-    public SeqClient(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
+	public SeqClient(HttpClient httpClient)
+	{
+		_httpClient = httpClient;
+	}
 
-    public async Task CheckSeqHealth() =>
-        await PolicyProvider.WaitRetryPolicy.ExecuteAsync(
-            async () => await _httpClient.GetAsync(_httpClient.BaseAddress));
+	public Task CheckSeqHealth() =>
+		PolicyProvider.WaitRetryPolicy.ExecuteAsync(
+			() => _httpClient.GetAsync(_httpClient.BaseAddress));
 }
