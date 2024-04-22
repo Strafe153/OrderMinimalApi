@@ -6,7 +6,7 @@ WORKDIR /app
 COPY ../*.sln ./
 COPY ../MinimalApi/*.csproj ./MinimalApi/
 COPY ../Application/*.csproj ./Application/
-COPY ../Core/*.csproj ./Core/
+COPY ../Domain/*.csproj ./Domain/
 COPY ../DataAccess/*.csproj ./DataAccess/
 COPY ../Tests/Application.Tests/*.csproj ./Tests/Application.Tests/
 COPY ../Tests/MinimalApi.Tests/*.csproj ./Tests/MinimalApi.Tests/
@@ -15,7 +15,7 @@ RUN dotnet restore
 # copy everything else and build app
 COPY ../MinimalApi/. ./MinimalApi/
 COPY ../Application/. ./Application/
-COPY ../Core/. ./Core/
+COPY ../Domain/. ./Domain/
 COPY ../DataAccess/. ./DataAccess/
 COPY ../Tests/Application.Tests/. ./Tests/Application.Tests/
 COPY ../Tests/MinimalApi.Tests/. ./Tests/MinimalApi.Tests/
