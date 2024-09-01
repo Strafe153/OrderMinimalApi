@@ -18,6 +18,7 @@
 * `Mapster` for DTO mapping
 * `Microsoft.AspNetCore.OpenApi` for Open API support
 * `Microsoft.AspNetCore.OutputCaching.StackExchangeRedis` for Redis output caching
+* `Microsoft.Extensions.Caching.Abstractions` for caching abstractions
 * `Microsoft.Extensions.Caching.StackExchangeRedis` for Redis caching extensions
 * `Microsoft.NET.Test.Sdk` for .NET SDK for testing
 * `MongoDB.Driver` for MongoDB
