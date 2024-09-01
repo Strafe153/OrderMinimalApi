@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Order;
 using Domain.Entities;
 using Mapster;
 
@@ -9,6 +9,7 @@ public class OrderMappingRegistration : IRegister
 	public void Register(TypeAdapterConfig config)
 	{
 		config.NewConfig<Order, OrderReadDto>();
-		config.NewConfig<OrderCreateUpdateDto, Order>();
+		config.NewConfig<OrderCreateDto, Order>();
+		config.NewConfig<OrderUpdateDto, Order>();
 	}
 }

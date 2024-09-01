@@ -1,17 +1,24 @@
 ﻿using MinimalApi.Policies;
+using RestSharp;
 
 namespace MinimalApi.HttpClients;
 
-public class SeqClient
+public class SeqClient : IDisposable
 {
-	private readonly HttpClient _httpClient;
+	private readonly RestClient _restClient;
 
 	public SeqClient(HttpClient httpClient)
 	{
-		_httpClient = httpClient;
-	}
+        _restClient = new(httpClient);
+    }
 
-	public Task CheckSeqHealth() =>
-		PolicyProvider.WaitRetryPolicy.ExecuteAsync(
-			() => _httpClient.GetAsync(_httpClient.BaseAddress));
+    public Task<RestResponse> CheckSeqConnectionAsync(CancellationToken cancellationToken) =>
+        PolicyProvider.WaitAndRetryPolicy.ExecuteAsync(
+            () => _restClient.GetAsync(new(), cancellationToken));
+
+    public void Dispose()
+    {
+        _restClient?.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

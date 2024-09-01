@@ -2,10 +2,10 @@
 
 namespace Domain.Interfaces.Repositories;
 
-public interface IOrderRepository
+public interface IOrdersRepository
 {
-	Task<IEnumerable<Order>> GetAllAsync(CancellationToken token = default);
-	Task<Order?> GetByIdAsync(string id, CancellationToken token = default);
+	Task<IEnumerable<Order>> GetAllAsync(CancellationToken token);
+	Task<Order?> GetByIdAsync(string id, CancellationToken token);
 	Task CreateAsync(Order order);
 	Task UpdateAsync(string id, Order newOrder);
 	Task DeleteAsync(string id);

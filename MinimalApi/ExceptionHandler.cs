@@ -2,32 +2,35 @@
 using Domain.Shared;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
-using System.Text.Json;
+using System.Net.Mime;
 
 namespace MinimalApi;
 
 public class ExceptionHandler : IExceptionHandler
 {
-	public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+	public async ValueTask<bool> TryHandleAsync(
+		HttpContext httpContext,
+		Exception exception,
+		CancellationToken cancellationToken)
 	{
 		var statusCode = GetHttpStatusCode(exception);
 		var statusCodeAsInt = (int)statusCode;
 
-		httpContext.Response.ContentType = "application/json";
+		httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 		httpContext.Response.StatusCode = statusCodeAsInt;
 
-		var problemDetails = new ProblemDetails
+		ProblemDetails problemDetails = new()
 		{
 			Type = GetRFCType(statusCode),
-			Title = exception.Message,
 			Status = statusCodeAsInt,
 			Detail = exception.Message,
 			Instance = httpContext.Request.Path
 		};
 
-		var json = JsonSerializer.Serialize(problemDetails);
-		await httpContext.Response.WriteAsync(json);
+		var json = JsonConvert.SerializeObject(problemDetails);
+		await httpContext.Response.WriteAsync(json, cancellationToken);
 
 		return true;
 	}
@@ -37,6 +40,8 @@ public class ExceptionHandler : IExceptionHandler
 		{
 			NullReferenceException => HttpStatusCode.NotFound,
 			OperationFailedException
+				or OpenIddictApplicationNotFoundException
+				or GrantNotImplementedException
 				or OperationCanceledException => HttpStatusCode.BadRequest,
 			_ => HttpStatusCode.InternalServerError
 		};

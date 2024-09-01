@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Order;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using MinimalApi.Endpoints;
@@ -54,11 +54,15 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 	public async Task Create_Should_ReturnCreatedOfOrderReadDto_WhenDataIsValid()
 	{
 		// Arrange
-		A.CallTo(() => _fixture.OrderService.CreateAsync(A<OrderCreateUpdateDto>._))
+		A.CallTo(() => _fixture.OrderService.CreateAsync(A<OrderCreateDto>._, A<CancellationToken>._))
 			.Returns(_fixture.OrderReadDto);
 
 		// Act
-		var result = await OrderEndpoints.Create(_fixture.OrderService, _fixture.OrderCreateUpdateDto);
+		var result = await OrderEndpoints.Create(
+			_fixture.OrderService,
+			_fixture.OrderCreateDto,
+			_fixture.CancellationToken);
+
 		var order = result.Value;
 
 		// Assert
@@ -70,7 +74,11 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 	public async Task Update_Should_ReturnNoContent_WhenDataIsValid()
 	{
 		// Act
-		var result = await OrderEndpoints.Update(_fixture.OrderService, _fixture.Id, _fixture.OrderCreateUpdateDto);
+		var result = await OrderEndpoints.Update(
+			_fixture.OrderService,
+			_fixture.Id,
+			_fixture.OrderUpdateDto,
+			_fixture.CancellationToken);
 
 		// Assert
 		result.StatusCode.ShouldBe(StatusCodes.Status204NoContent);
@@ -80,7 +88,7 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 	public async Task Delete_Should_ReturnNoContent_WhenDataIsValid()
 	{
 		// Act
-		var result = await OrderEndpoints.Delete(_fixture.OrderService, _fixture.Id);
+		var result = await OrderEndpoints.Delete(_fixture.OrderService, _fixture.Id, _fixture.CancellationToken);
 
 		// Assert
 		result.StatusCode.ShouldBe(StatusCodes.Status204NoContent);

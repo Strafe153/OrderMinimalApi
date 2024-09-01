@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Order;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MinimalApi.Validation.Validators;
@@ -13,5 +13,5 @@ public static class FluentValidationConfiguration
 			.AddFluentValidationClientsideAdapters();
 
 	public static void AddCustomValidators(this IServiceCollection services) =>
-		services.AddScoped<IValidator<OrderCreateUpdateDto>, OrderCreateUpdateValidator>();
+		services.AddScoped<IValidator<OrderCreateDto>, OrderCreateUpdateValidator>();
 }

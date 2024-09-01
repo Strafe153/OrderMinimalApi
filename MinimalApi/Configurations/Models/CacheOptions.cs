@@ -4,5 +4,5 @@ public class CacheOptions
 {
     public const string SectionName = "Cache";
 
-    public TimeSpan Expiration { get; set; }
+    public TimeSpan Expiration { get; init; }
 }

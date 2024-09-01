@@ -6,5 +6,7 @@ namespace MinimalApi.Configurations;
 public static class ServicesConfiguration
 {
 	public static void AddCustomServices(this IServiceCollection services) =>
-		services.AddScoped<IOrderService, OrderService>();
+		services
+			.AddScoped<IAuthorizationService, AuthorizationService>()
+			.AddScoped<IOrdersService, OrdersService>();
 }

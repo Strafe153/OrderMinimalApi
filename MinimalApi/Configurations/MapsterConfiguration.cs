@@ -6,12 +6,12 @@ namespace MinimalApi.Configurations;
 
 public static class MapsterConfiguration
 {
-    public static void ConfigureMapster(this IServiceCollection services)
-    {
-        var config = TypeAdapterConfig.GlobalSettings;
-        config.Scan(Assembly.GetExecutingAssembly());
+	public static void ConfigureMapster(this IServiceCollection services)
+	{
+		var config = TypeAdapterConfig.GlobalSettings;
+		config.Scan(Assembly.GetExecutingAssembly());
 
-        var mapper = new Mapper(config);
-        services.AddSingleton<IMapper>(mapper);
-    }
+		var mapper = new Mapper(config);
+		services.AddSingleton<IMapper>(mapper);
+	}
 }
