@@ -16,16 +16,20 @@
 * `FluentValidation` for DTO validation
 * `FluentValidation.AspNetCore` for ASP.NET Core integration with FluentValidation
 * `Mapster` for DTO mapping
-* `Microsoft.AspNetCore.Mvc.NewtonsoftJson` for JSON serialization
 * `Microsoft.AspNetCore.OpenApi` for Open API support
-* `Microsoft.Extensions.Caching.StackExchangeRedis` for redis cache
+* `Microsoft.AspNetCore.OutputCaching.StackExchangeRedis` for Redis output caching
+* `Microsoft.Extensions.Caching.StackExchangeRedis` for Redis caching extensions
 * `Microsoft.NET.Test.Sdk` for .NET SDK for testing
 * `MongoDB.Driver` for MongoDB
-* `Polly.Extensions.Http` for transient fault handling
+* `Newtonsoft.Json` for JSON serialization
+* `OpenIddict.AspNetCore` for OpenIddict integration with ASP.NET Core
+* `OpenIddict.MongoDb` for OpenIddict data persistence in MongoDb
+* `Polly` for transient fault handling
+* `RestSharp` for HTTP and REST calls
 * `Serilog.AspNetCore` for Serilog support for ASP.NET Core
 * `Serilog.Exceptions` for detailed Serilog exceptions
 * `Serilog.Sinks.Console` for Serilog console sink
-* `Serilog.Sinks.Seq` for Serilog Seq sink
+* `Serilog.Sinks.OpenTelemetry` for Serilog integration with OpenTelemetry
 * `Shouldly` for assertions
 * `Swashbuckle.AspNetCore` for Swagger support
 * `xunit` for unit-tests
