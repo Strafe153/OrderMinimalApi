@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Order;
 using Application.Tests.Fixtures;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -25,7 +25,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.FromResult(_fixture.Orders));
 
 		// Act
-		var result = await _fixture.OrderService.GetAllAsync();
+		var result = await _fixture.OrderService.GetAllAsync(_fixture.CancellationToken);
 
 		// Assert
 		result.Count().ShouldBe(_fixture.OrdersCount);
@@ -39,7 +39,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.FromResult(_fixture.Order));
 
 		// Act
-		var result = await _fixture.OrderService.GetByIdAsync(_fixture.Id);
+		var result = await _fixture.OrderService.GetByIdAsync(_fixture.Id, _fixture.CancellationToken);
 
 		// Assert
 		result.ShouldNotBeNull();
@@ -54,7 +54,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.FromResult((Order?)null));
 
 		// Act
-		var result = async () => await _fixture.OrderService.GetByIdAsync(_fixture.Id);
+		var result = () => _fixture.OrderService.GetByIdAsync(_fixture.Id, _fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldThrowAsync<NullReferenceException>();
@@ -64,7 +64,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 	public async Task CreateAsync_Should_ReturnOrderReadDto_WhenDtoIsValid()
 	{
 		// Act
-		var result = await _fixture.OrderService.CreateAsync(_fixture.OrderDto);
+		var result = await _fixture.OrderService.CreateAsync(_fixture.OrderCreateDto, _fixture.CancellationToken);
 
 		// Assert
 		result.ShouldNotBeNull();
@@ -79,7 +79,10 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.CompletedTask);
 
 		// Act
-		var result = async () => await _fixture.OrderService.UpdateAsync(_fixture.Id, _fixture.OrderDto);
+		var result = () => _fixture.OrderService.UpdateAsync(
+			_fixture.Id,
+			_fixture.OrderUpdateDto,
+			_fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldNotThrowAsync();
@@ -93,7 +96,10 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.FromResult((Order?)null));
 
 		// Act
-		var result = async () => await _fixture.OrderService.UpdateAsync(_fixture.Id, _fixture.OrderDto);
+		var result = () => _fixture.OrderService.UpdateAsync(
+			_fixture.Id,
+			_fixture.OrderUpdateDto,
+			_fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldThrowAsync<NullReferenceException>();
@@ -107,7 +113,10 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.ThrowsAsync(_fixture.OperationFailedException);
 
 		// Act
-		var result = async () => await _fixture.OrderService.UpdateAsync(_fixture.Id, _fixture.OrderDto);
+		var result = () => _fixture.OrderService.UpdateAsync(
+			_fixture.Id,
+			_fixture.OrderUpdateDto,
+			_fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldThrowAsync<OperationFailedException>();
@@ -121,7 +130,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.FromResult(_fixture.Order));
 
 		// Act
-		var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
+		var result = () => _fixture.OrderService.DeleteAsync(_fixture.Id, _fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldNotThrowAsync();
@@ -135,7 +144,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.Returns(Task.FromResult((Order?)null));
 
 		// Act
-		var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
+		var result = () => _fixture.OrderService.DeleteAsync(_fixture.Id, _fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldThrowAsync<NullReferenceException>();
@@ -149,7 +158,7 @@ public class OrderServiceTests : IClassFixture<OrderServiceFixture>
 			.ThrowsAsync(_fixture.OperationFailedException);
 
 		// Act
-		var result = async () => await _fixture.OrderService.DeleteAsync(_fixture.Id);
+		var result = () => _fixture.OrderService.DeleteAsync(_fixture.Id, _fixture.CancellationToken);
 
 		// Assert
 		await result.ShouldThrowAsync<OperationFailedException>();

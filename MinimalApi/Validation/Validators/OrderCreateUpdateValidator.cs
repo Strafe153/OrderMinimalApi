@@ -1,12 +1,14 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Order;
 using Domain.Shared.Constants;
 using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace MinimalApi.Validation.Validators;
 
-public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateUpdateDto>
+public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateDto>
 {
+	private static readonly Regex _fullNameRegex = new(ValidatorConstants.FullNamePattern);
+
 	public OrderCreateUpdateValidator()
 	{
 		RuleFor(o => o.CustomerName)
@@ -42,8 +44,5 @@ public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateUpdateDto
 			.WithMessage("Damage must not be greater than 100000");
 	}
 
-	private bool BeOfFormat(string name) =>
-		name is not null
-			? new Regex(ValidatorConstants.FullNamePattern).Match(name).Length > 0
-			: false;
+	private bool BeOfFormat(string name) => name is not null && _fullNameRegex.Match(name).Length > 0;
 }

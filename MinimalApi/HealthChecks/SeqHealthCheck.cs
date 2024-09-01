@@ -5,18 +5,18 @@ namespace MinimalApi.HealthChecks;
 
 public class SeqHealthCheck : IHealthCheck
 {
-    private readonly SeqClient _client;
+    private readonly SeqClient _seqClient;
 
-    public SeqHealthCheck(SeqClient client)
+    public SeqHealthCheck(SeqClient seqClient)
     {
-        _client = client;
+        _seqClient = seqClient;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _client.CheckSeqHealth();
+            await _seqClient.CheckSeqConnectionAsync(cancellationToken);
             return HealthCheckResult.Healthy();
         }
         catch (Exception ex)

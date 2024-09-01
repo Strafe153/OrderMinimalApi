@@ -1,33 +1,8 @@
-version: '3.8'
-
 services:
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - 27017:27017
-
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - 6379:6379
-
-  seq:
-    image: datalust/seq:latest
-    container_name: seq
-    ports:
-      - 5341:80
-      - 5342:5342
-    environment:
-      - ACCEPT_EULA=Y
-    volumes:
-      - seq-data:/data
-
   minimalapi:
     build:
-      context: .
-      dockerfile: ./MinimalApi/Dockerfile
+      context: ./MinimalApi/
+      dockerfile: Dockerfile
     container_name: minimalapi
     ports:
       - 8080:80
@@ -47,5 +22,35 @@ services:
       - redis
       - seq
 
+  mongodb:
+    image: mongo:7.0.13-rc0
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+
+  redis:
+    image: redis:7.4.0
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+
+  seq:
+    image: datalust/seq:2024.3
+    container_name: seq
+    ports:
+      - 5341:80
+      - 5342:5342
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - seq-data:/data
+
 volumes:
-  seq-data:   
+  mongodb-data:
+  redis-data:
+  seq-data:

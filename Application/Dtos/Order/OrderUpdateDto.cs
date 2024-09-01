@@ -1,6 +1,6 @@
-﻿namespace Application.Dtos;
+﻿namespace Application.Dtos.Order;
 
-public record OrderCreateUpdateDto(
+public record OrderUpdateDto(
 	string CustomerName,
 	string Address,
 	string Product,

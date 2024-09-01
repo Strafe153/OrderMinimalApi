@@ -1,6 +1,7 @@
 using MinimalApi;
 using MinimalApi.Configurations;
 using MinimalApi.Endpoints;
+using OpenIddict.Validation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,11 @@ builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.ConfigureHealthChecks(builder.Configuration);
 builder.Services.ConfigureRateLimiting(builder.Configuration);
 builder.Services.ConfigureHttpClients(builder.Configuration);
+
+builder.Services.AddAuthentication(options =>
+    options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+builder.Services.AddAuthorization();
+builder.Services.ConfigureOpenIddict(builder.Configuration);
 
 builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
@@ -30,10 +36,9 @@ var app = builder.Build();
 // As of now that's a confirmed, though yet unfixed bug acknowledged by Microsoft
 app.UseExceptionHandler(_ => { });
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.ConfigureSwaggerUI();
+	app.ConfigureSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -44,7 +49,12 @@ app.UseRateLimiter();
 
 app.UseOutputCache();
 
-// Add Order endpoints.
-app.UseOrderEndpoints();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapAuthorizationEndpoints();
+app.MapOrderEndpoints();
+
+await app.CreateIndexes();
 
 app.Run();

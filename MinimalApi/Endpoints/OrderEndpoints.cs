@@ -1,68 +1,77 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Order;
 using Application.Services.Interfaces;
 using Domain.Shared.Constants;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Filters;
+using OpenIddict.Validation.AspNetCore;
 
 namespace MinimalApi.Endpoints;
 
 public static class OrderEndpoints
 {
-	public static void UseOrderEndpoints(this WebApplication app)
+	public static void MapOrderEndpoints(this WebApplication app)
 	{
 		var orderEndpointsGroup = app
 			.MapGroup("api/v{version:apiVersion}/orders")
-			.RequireRateLimiting(RateLimitingConstants.TokenBucket);
+			.RequireRateLimiting(RateLimitingConstants.TokenBucket)
+			.RequireAuthorization();
 
 		orderEndpointsGroup
 			.MapGet(string.Empty, GetAll)
-			.CacheOutput();
+			.CacheOutput(p => p.Tag(CacheConstants.OrdersTag));
 
 		orderEndpointsGroup
 			.MapGet("{id}", Get)
-			.CacheOutput();
+			.CacheOutput(p => p.Tag(CacheConstants.OrderTag));
 
 		orderEndpointsGroup
 			.MapPost(string.Empty, Create)
-			.AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
+			.AddEndpointFilter<ValidationFilter<OrderCreateDto>>();
 
 		orderEndpointsGroup
 			.MapPut("{id}", Update)
-			.AddEndpointFilter<ValidationFilter<OrderCreateUpdateDto>>();
+			.AddEndpointFilter<ValidationFilter<OrderUpdateDto>>();
 
 		orderEndpointsGroup.MapDelete("{id}", Delete);
 	}
 
-	public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAll([FromServices] IOrderService service, CancellationToken token) =>
-		TypedResults.Ok(await service.GetAllAsync(token));
+	public static async Task<Ok<IEnumerable<OrderReadDto>>> GetAll(
+		[FromServices] IOrdersService service,
+		CancellationToken token) =>
+			TypedResults.Ok(await service.GetAllAsync(token));
 
 	public static async Task<Ok<OrderReadDto>> Get(
-		[FromServices] IOrderService service,
+		[FromServices] IOrdersService service,
 		[FromRoute] string id,
 		CancellationToken token) =>
 			TypedResults.Ok(await service.GetByIdAsync(id, token));
 
 	public static async Task<Created<OrderReadDto>> Create(
-		[FromServices] IOrderService service,
-		[FromBody] OrderCreateUpdateDto createDto)
+		[FromServices] IOrdersService service,
+		[FromBody] OrderCreateDto createDto,
+		CancellationToken token)
 	{
-		var readDto = await service.CreateAsync(createDto);
+		var readDto = await service.CreateAsync(createDto, token);
 		return TypedResults.Created($"api/orders/{readDto.Id}", readDto);
 	}
 
 	public static async Task<NoContent> Update(
-		[FromServices] IOrderService service,
+		[FromServices] IOrdersService service,
 		[FromRoute] string id,
-		[FromBody] OrderCreateUpdateDto updateDto)
+		[FromBody] OrderUpdateDto updateDto,
+		CancellationToken token)
 	{
-		await service.UpdateAsync(id, updateDto);
+		await service.UpdateAsync(id, updateDto, token);
 		return TypedResults.NoContent();
 	}
 
-	public static async Task<NoContent> Delete([FromServices] IOrderService service, [FromRoute] string id)
+	public static async Task<NoContent> Delete(
+		[FromServices] IOrdersService service,
+		[FromRoute] string id,
+		CancellationToken token)
 	{
-		await service.DeleteAsync(id);
+		await service.DeleteAsync(id, token);
 		return TypedResults.NoContent();
 	}
 }

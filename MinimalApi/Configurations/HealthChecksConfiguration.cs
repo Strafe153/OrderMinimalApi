@@ -1,7 +1,7 @@
-﻿using Domain.Shared;
-using Domain.Shared.Constants;
+﻿using Domain.Shared.Constants;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using MinimalApi.Configurations.Models;
 using MinimalApi.HealthChecks;
 
 namespace MinimalApi.Configurations;
@@ -10,7 +10,7 @@ public static class HealthChecksConfiguration
 {
 	public static void ConfigureHealthChecks(this IServiceCollection services, IConfiguration configuration)
 	{
-		var databaseOptions = configuration.GetSection(OrderDatabaseOptions.SectionName).Get<OrderDatabaseOptions>()!;
+		var databaseOptions = configuration.GetSection(DatabaseOptions.SectionName).Get<DatabaseOptions>()!;
 
 		services
 			.AddHealthChecks()
@@ -20,8 +20,10 @@ public static class HealthChecksConfiguration
 	}
 
 	public static void UseHealthChecks(this WebApplication application) =>
-		application.MapHealthChecks("/_health", new HealthCheckOptions
-		{
-			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-		});
+		application.MapHealthChecks(
+			"/_health",
+			new HealthCheckOptions
+			{
+				ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+			});
 }
