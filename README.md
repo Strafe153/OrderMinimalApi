@@ -15,6 +15,7 @@
 * `FakeItEasy` for mocking
 * `FluentValidation` for DTO validation
 * `FluentValidation.AspNetCore` for ASP.NET Core integration with FluentValidation
+* `Flurl.Http` for HTTP calls
 * `Mapster` for DTO mapping
 * `Microsoft.AspNetCore.OpenApi` for Open API support
 * `Microsoft.AspNetCore.OutputCaching.StackExchangeRedis` for Redis output caching
@@ -26,7 +27,6 @@
 * `OpenIddict.AspNetCore` for OpenIddict integration with ASP.NET Core
 * `OpenIddict.MongoDb` for OpenIddict data persistence in MongoDb
 * `Polly` for transient fault handling
-* `RestSharp` for HTTP and REST calls
 * `Serilog.AspNetCore` for Serilog support for ASP.NET Core
 * `Serilog.Exceptions` for detailed Serilog exceptions
 * `Serilog.Sinks.Console` for Serilog console sink
