@@ -10,7 +10,7 @@ builder.ConfigureLoggers();
 builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.ConfigureHealthChecks(builder.Configuration);
 builder.Services.ConfigureRateLimiting(builder.Configuration);
-builder.Services.ConfigureHttpClients(builder.Configuration);
+builder.Services.ConfigureFlurl(builder.Configuration);
 
 builder.Services.AddAuthentication(options =>
     options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
