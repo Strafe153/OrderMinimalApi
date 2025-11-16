@@ -15,7 +15,7 @@ public static class OutputCacheConfiguration
 					policy.Expire(cacheOptions.Expiration);
 				});
 			})
-			.AddStackExchangeRedisCache(options =>
+			.AddStackExchangeRedisOutputCache(options =>
 			{
 				options.InstanceName = typeof(Program).Assembly.GetName().Name;
 				options.Configuration = configuration.GetConnectionString(ConnectionStringConstants.RedisConnection);
