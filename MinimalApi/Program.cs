@@ -26,7 +26,9 @@ builder.Services.ConfigureOutputCache(builder.Configuration);
 builder.Services.ConfigureMapster();
 builder.Services.ConfigureFluentValidation();
 
-builder.Services.AddExceptionHandler<ExceptionHandler>();
+builder.Services
+    .AddProblemDetails()
+    .AddExceptionHandler<ExceptionHandler>();
 
 builder.Services.ConfigureApiVersioning();
 builder.Services.ConfigureSwagger();
