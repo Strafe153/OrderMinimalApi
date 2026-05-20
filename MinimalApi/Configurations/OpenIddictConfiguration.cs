@@ -25,7 +25,8 @@ public static class OpenIddictConfiguration
                 .AddDevelopmentEncryptionCertificate()
                 .AddDevelopmentSigningCertificate()
                 .UseAspNetCore()
-                .EnableTokenEndpointPassthrough())
+                .EnableTokenEndpointPassthrough()
+                .DisableTransportSecurityRequirement())
             .AddValidation(options =>
             {
                 options.UseLocalServer();

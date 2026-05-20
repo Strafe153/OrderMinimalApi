@@ -1,15 +1,11 @@
-﻿using Application.Dtos.Order;
-using Domain.Shared.Constants;
+using Application.Dtos.Order;
 using FluentValidation;
-using System.Text.RegularExpressions;
 
 namespace MinimalApi.Validation.Validators;
 
-public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateDto>
+public class OrderUpdateDtoValidator : AbstractValidator<OrderUpdateDto>
 {
-	private static readonly Regex _fullNameRegex = new(ValidatorConstants.FullNamePattern);
-
-	public OrderCreateUpdateValidator()
+	public OrderUpdateDtoValidator()
 	{
 		RuleFor(o => o.CustomerName)
 			.NotEmpty()
@@ -18,7 +14,7 @@ public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateDto>
 			.WithMessage("CustomerName must be at least 5 characters long")
 			.MaximumLength(30)
 			.WithMessage("CustomerName must not be longer than 30 characters")
-			.Must(BeOfFormat)
+			.Must(CustomValidations.BeInFullNameFormat)
 			.WithMessage("CustomerName must be of format 'Firstname Lastname'");
 
 		RuleFor(o => o.Address)
@@ -43,6 +39,4 @@ public class OrderCreateUpdateValidator : AbstractValidator<OrderCreateDto>
 			.LessThan(100001)
 			.WithMessage("Damage must not be greater than 100000");
 	}
-
-	private bool BeOfFormat(string name) => name is not null && _fullNameRegex.Match(name).Length > 0;
 }
