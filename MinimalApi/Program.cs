@@ -1,6 +1,8 @@
+using FluentValidation;
 using MinimalApi;
 using MinimalApi.Configurations;
 using MinimalApi.Endpoints;
+using MinimalApi.Validation.Validators;
 using OpenIddict.Validation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,12 +21,10 @@ builder.Services.ConfigureOpenIddict(builder.Configuration);
 
 builder.Services.AddRepositories();
 builder.Services.AddCustomServices();
-builder.Services.AddCustomValidators();
 
 builder.Services.ConfigureOutputCache(builder.Configuration);
 
-builder.Services.ConfigureMapster();
-builder.Services.ConfigureFluentValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<OrderCreateDtoValidator>();
 
 builder.Services
     .AddProblemDetails()

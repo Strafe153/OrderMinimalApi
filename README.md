@@ -16,7 +16,6 @@
 * `FluentValidation` for DTO validation
 * `FluentValidation.AspNetCore` for ASP.NET Core integration with FluentValidation
 * `Flurl.Http` for HTTP calls
-* `Mapster` for DTO mapping
 * `Microsoft.AspNetCore.OpenApi` for Open API support
 * `Microsoft.AspNetCore.OutputCaching.StackExchangeRedis` for Redis output caching
 * `Microsoft.Extensions.Caching.Abstractions` for caching abstractions
