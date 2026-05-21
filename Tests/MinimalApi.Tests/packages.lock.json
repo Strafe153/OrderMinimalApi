@@ -224,19 +224,6 @@
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         }
       },
-      "Flurl": {
-        "type": "Transitive",
-        "resolved": "4.0.0",
-        "contentHash": "rpts69yYgvJqg6PPgqShBQEZ4aNzWQqWpWppcT0oDWxDCIsBqiod4pj6LQZdhk+1OozLFagemldMRACdHF3CsA=="
-      },
-      "Flurl.Http": {
-        "type": "Transitive",
-        "resolved": "4.0.2",
-        "contentHash": "9vCqFFyceA11yplkFD8AbCFFTvG1Lrw3tpsgOpL5sLUc28p6zcvGszNleuT6nDymRvtt5eS+rqUX+bRztg1fhA==",
-        "dependencies": {
-          "Flurl": "4.0.0"
-        }
-      },
       "Google.Protobuf": {
         "type": "Transitive",
         "resolved": "3.26.1",
@@ -2325,7 +2312,6 @@
           "Domain": "[1.0.0, )",
           "FluentValidation": "[11.6.0, 11.6.0]",
           "FluentValidation.AspNetCore": "[11.3.0, 11.3.0]",
-          "Flurl.Http": "[4.0.2, 4.0.2]",
           "Microsoft.AspNetCore.OpenApi": "[7.0.7, 7.0.7]",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[8.0.5, 8.0.5]",
           "Newtonsoft.Json": "[13.0.3, 13.0.3]",

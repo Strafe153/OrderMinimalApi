@@ -4,18 +4,11 @@ using OpenIddict.Abstractions;
 
 namespace MinimalApi.HostedServices;
 
-public class OpenIddictHostedService : IHostedService
+public class OpenIddictHostedService(IServiceProvider serviceProvider) : IHostedService
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public OpenIddictHostedService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
 
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
         var clientOptions = scope.ServiceProvider.GetRequiredService<IOptions<OpenIddictOptions>>().Value;

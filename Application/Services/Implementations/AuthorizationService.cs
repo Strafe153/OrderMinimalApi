@@ -9,28 +9,23 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Application.Services.Implementations;
 
-public class AuthorizationService : IAuthorizationService
+public class AuthorizationService(IOpenIddictApplicationManager openIddictAppManager) : IAuthorizationService
 {
-    private readonly IOpenIddictApplicationManager _openIddictAppManager;
-
-    public AuthorizationService(IOpenIddictApplicationManager openIddictAppManager)
-    {
-        _openIddictAppManager = openIddictAppManager;
-    }
-
-    public async Task<ClaimsPrincipal> GetClaimsPrincipalAsync(HttpContext context, CancellationToken cancellationToken)
+    public async Task<ClaimsPrincipal> GetClaimsPrincipalAsync(
+        HttpContext context,
+        CancellationToken cancellationToken)
     {
         var request = context.GetOpenIddictServerRequest();
 
         if (request?.ClientId is not null && request.IsClientCredentialsGrantType())
         {
-            var application = await _openIddictAppManager.FindByClientIdAsync(request.ClientId, cancellationToken)
+            var application = await openIddictAppManager.FindByClientIdAsync(request.ClientId, cancellationToken)
                 ?? throw new OpenIddictApplicationNotFoundException("The application cannot be found.");
 
             ClaimsIdentity identity = new(TokenValidationParameters.DefaultAuthenticationType, Claims.Name, Claims.Role);
 
-            var clientId = await _openIddictAppManager.GetClientIdAsync(application, cancellationToken);
-            var displayName = await _openIddictAppManager.GetDisplayNameAsync(application, cancellationToken);
+            var clientId = await openIddictAppManager.GetClientIdAsync(application, cancellationToken);
+            var displayName = await openIddictAppManager.GetDisplayNameAsync(application, cancellationToken);
 
             identity
                 .SetClaim(Claims.Subject, clientId)

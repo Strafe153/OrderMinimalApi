@@ -1,13 +1,12 @@
-﻿using Flurl.Http;
-using Polly;
+﻿using Polly;
 using Polly.Retry;
 
 namespace MinimalApi.Policies;
 
 public static class PolicyProvider
 {
-    public static AsyncRetryPolicy FlurlWaitAndRetryPolicy =>
+    public static AsyncRetryPolicy WaitAndRetryPolicy =>
         Policy
-            .Handle<FlurlHttpException>()
+            .Handle<HttpRequestException>()
             .WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(1.5, retry)));
 }

@@ -21,7 +21,7 @@ public static class HealthChecksConfiguration
 
 	public static void UseHealthChecks(this WebApplication application) =>
 		application.MapHealthChecks(
-			"/_health",
+			"/health",
 			new HealthCheckOptions
 			{
 				ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

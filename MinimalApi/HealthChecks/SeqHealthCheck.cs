@@ -1,26 +1,19 @@
-﻿using Domain.Shared.Constants;
-using Flurl.Http;
-using Flurl.Http.Configuration;
+﻿using Application.HttpClients;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MinimalApi.Policies;
 
 namespace MinimalApi.HealthChecks;
 
-public class SeqHealthCheck : IHealthCheck
+public class SeqHealthCheck(SeqClient client) : IHealthCheck
 {
-    private readonly IFlurlClient _seqClient;
-
-    public SeqHealthCheck(IFlurlClientCache clientCache)
-    {
-        _seqClient = clientCache.Get(FlurlConstants.SeqClient);
-    }
-
-    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    public async Task<HealthCheckResult> CheckHealthAsync(
+        HealthCheckContext context,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            await PolicyProvider.FlurlWaitAndRetryPolicy.ExecuteAsync(
-                () => _seqClient.Request().GetAsync(cancellationToken: cancellationToken));
+            await PolicyProvider.WaitAndRetryPolicy.ExecuteAsync(() =>
+                client.CheckHealthAsync(cancellationToken));
 
             return HealthCheckResult.Healthy();
         }

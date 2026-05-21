@@ -8,41 +8,34 @@ using Xunit;
 
 namespace Endpoints.Tests;
 
-public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
+public class OrderEndpointsTests(OrderEndpointsFixture fixture) : IClassFixture<OrderEndpointsFixture>
 {
-	private readonly OrderEndpointsFixture _fixture;
-
-	public OrderEndpointsTests(OrderEndpointsFixture fixture)
-	{
-		_fixture = fixture;
-	}
-
 	[Fact]
 	public async Task GetAll_Should_ReturnOkOfOrderReadDto_WhenOrdersExist()
 	{
 		// Arrange
-		A.CallTo(() => _fixture.OrderService.GetAllAsync(A<CancellationToken>._))
-			.Returns(_fixture.OrderReadDtos);
+		A.CallTo(() => fixture.OrderService.GetAllAsync(A<CancellationToken>._))
+			.Returns(fixture.OrderReadDtos);
 
 		// Act
-		var result = await OrderEndpoints.GetAll(_fixture.OrderService, _fixture.CancellationToken);
+		var result = await OrderEndpoints.GetAll(fixture.OrderService, fixture.CancellationToken);
 		var orders = result.Value;
 
 		// Assert
 		result.StatusCode.ShouldBe(StatusCodes.Status200OK);
 		orders.ShouldNotBeNull();
-		orders.Count().ShouldBe(_fixture.OrderReadDtosCount);
+		orders.Count().ShouldBe(fixture.OrderReadDtosCount);
 	}
 
 	[Fact]
 	public async Task Get_Should_ReturnOkOfOrderReadDto_WhenOrderExists()
 	{
 		// Arrange
-		A.CallTo(() => _fixture.OrderService.GetByIdAsync(A<string>._, A<CancellationToken>._))
-			.Returns(_fixture.OrderReadDto);
+		A.CallTo(() => fixture.OrderService.GetByIdAsync(A<string>._, A<CancellationToken>._))
+			.Returns(fixture.OrderReadDto);
 
 		// Act
-		var result = await OrderEndpoints.Get(_fixture.OrderService, _fixture.Id, _fixture.CancellationToken);
+		var result = await OrderEndpoints.Get(fixture.OrderService, fixture.Id, fixture.CancellationToken);
 		var order = result.Value;
 
 		// Assert
@@ -54,14 +47,14 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 	public async Task Create_Should_ReturnCreatedOfOrderReadDto_WhenDataIsValid()
 	{
 		// Arrange
-		A.CallTo(() => _fixture.OrderService.CreateAsync(A<OrderCreateDto>._, A<CancellationToken>._))
-			.Returns(_fixture.OrderReadDto);
+		A.CallTo(() => fixture.OrderService.CreateAsync(A<OrderCreateDto>._, A<CancellationToken>._))
+			.Returns(fixture.OrderReadDto);
 
 		// Act
 		var result = await OrderEndpoints.Create(
-			_fixture.OrderService,
-			_fixture.OrderCreateDto,
-			_fixture.CancellationToken);
+			fixture.OrderService,
+			fixture.OrderCreateDto,
+			fixture.CancellationToken);
 
 		var order = result.Value;
 
@@ -75,10 +68,10 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 	{
 		// Act
 		var result = await OrderEndpoints.Update(
-			_fixture.OrderService,
-			_fixture.Id,
-			_fixture.OrderUpdateDto,
-			_fixture.CancellationToken);
+			fixture.OrderService,
+			fixture.Id,
+			fixture.OrderUpdateDto,
+			fixture.CancellationToken);
 
 		// Assert
 		result.StatusCode.ShouldBe(StatusCodes.Status204NoContent);
@@ -88,7 +81,7 @@ public class OrderEndpointsTests : IClassFixture<OrderEndpointsFixture>
 	public async Task Delete_Should_ReturnNoContent_WhenDataIsValid()
 	{
 		// Act
-		var result = await OrderEndpoints.Delete(_fixture.OrderService, _fixture.Id, _fixture.CancellationToken);
+		var result = await OrderEndpoints.Delete(fixture.OrderService, fixture.Id, fixture.CancellationToken);
 
 		// Assert
 		result.StatusCode.ShouldBe(StatusCodes.Status204NoContent);
