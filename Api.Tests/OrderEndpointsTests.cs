@@ -146,32 +146,6 @@ public class OrderEndpointsTests(OrderEndpointsFixture fixture) : IClassFixture<
 		Assert.Equal("Mecha man suit", order.Product);
 	}
 
-	// [Fact]
-	// public async Task CreateOrder_Should_ThrowOperationFailedException_WhenDataIsInvalid()
-	// {
-	// 	// Arrange
-	// 	CreateOrderRequest request = new(
-	// 		"Robert Robertson",
-	// 		"SDN Torrance branch",
-	// 		"Mecha man suit",
-	// 		1399.99m);
-
-	// 	// Act
-	// 	var result = await CreateOrderEndpoint.Handle(
-	// 		request,
-	// 		fixture.Repository.Object,
-	// 		fixture.OutputCache.Object,
-	// 		fixture.CreateOrderLogger.Object,
-	// 		new CancellationToken());
-
-	// 	var order = result.Value;
-
-	// 	// Assert
-	// 	Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
-	// 	Assert.NotNull(order);
-	// 	Assert.Equal("Mecha man suit", order.Product);
-	// }
-
 	[Fact]
 	public async Task UpdateOrder_Should_ReturnNoContent_WhenOrderExists()
 	{
