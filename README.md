@@ -1,5 +1,5 @@
 # OrderMinimalApi
-### An ASP.NET Core Minimal Api with MongoDB serving as the database.
+### An ASP.NET Core Minimal Api with MongoDB serving as the database, built following Vertical Slice architecture.
 
 ## What Can It Do?
 * CRUD operations with the Order entity
